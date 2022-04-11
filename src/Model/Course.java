@@ -43,6 +43,28 @@ public class Course {
         return course;
     }
 
+    public List<Client> getAllClients()
+    {
+        List<Client> allClient = new ArrayList<>();
+
+        for (Truck truck : this.trucks) {
+            allClient.addAll(truck.getClients());
+        }
+
+        return allClient;
+    }
+
+    public void recuitSimule()
+    {
+
+    }
+
+    public void tabou()
+    {
+
+    }
+
+
     public void addTruck(Truck truck)
     {
         this.trucks.add(truck);
