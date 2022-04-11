@@ -15,6 +15,11 @@ public class Client {
         this.position = position;
     }
 
+    public int getDistance(Client client)
+    {
+        return (int)Math.sqrt(Math.pow(2, client.getPosition()[0] - this.position[0]) + Math.pow(2, client.getPosition()[1] - this.position[1]));
+    }
+
     public float[] getPosition() {
         return position;
     }

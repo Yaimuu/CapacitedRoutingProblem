@@ -81,8 +81,7 @@ public class Truck {
             client2 = this.clients.get(rand.nextInt(1, index2));
         } while (Math.abs(index1 - this.clients.indexOf(client1)) > 1);
 
-        Client tmp = client1;
-//        this.getClients().set()
-
+        this.getClients().set(index1, client2);
+        this.getClients().set(index2, client1);
     }
 }

@@ -54,6 +54,17 @@ public class Course {
         return allClient;
     }
 
+    public float computeFitness()
+    {
+        float fitness = 0;
+        for (Truck truck : this.trucks) {
+            for (int i = 1; i < truck.getClients().size()-1; i++) {
+                fitness += truck.getClients().get(i).getDistance(truck.getClients().get(i-1));
+            }
+        }
+        return fitness;
+    }
+
     public void recuitSimule()
     {
 

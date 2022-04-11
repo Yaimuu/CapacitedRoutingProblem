@@ -11,9 +11,9 @@ import java.util.List;
 
 public class CourseView extends JPanel {
 
-    Course course;
+    private Course course;
 
-    List<TruckView> truckViews;
+    private List<TruckView> truckViews;
 
     public CourseView(List<Client> clients)
     {
@@ -24,6 +24,8 @@ public class CourseView extends JPanel {
         for (Truck truck : this.course.getTrucks()) {
             this.truckViews.add(new TruckView(truck));
         }
+
+        System.out.println(this.course.computeFitness());
     }
 
     @Override
@@ -38,4 +40,19 @@ public class CourseView extends JPanel {
         g.drawRect(0,0, this.getWidth(), this.getHeight());
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public List<TruckView> getTruckViews() {
+        return truckViews;
+    }
+
+    public void setTruckViews(List<TruckView> truckViews) {
+        this.truckViews = truckViews;
+    }
 }
