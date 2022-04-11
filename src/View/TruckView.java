@@ -14,11 +14,11 @@ public class TruckView extends Canvas {
 
     private final Random rand = new Random();
 
-    Truck truck;
+    private Truck truck;
 
-    List<ClientView> clientViews;
+    private List<ClientView> clientViews;
 
-    Color truckColor;
+    private Color truckColor;
 
     public TruckView(Truck truck)
     {
@@ -55,8 +55,9 @@ public class TruckView extends Canvas {
 
             if(i > 0)
             {
-                int x1 = (int)lastClient.getClient().getPosition()[0] * scale, y1 = (int)lastClient.getClient().getPosition()[1] * scale;
-                int x2 = (int)cv.getClient().getPosition()[0] * scale, y2 = (int)cv.getClient().getPosition()[1] * scale;
+                int clientSize = lastClient.getClientSize()/2;
+                int x1 = (int)lastClient.getClient().getPosition()[0] * scale + clientSize, y1 = (int)lastClient.getClient().getPosition()[1] * scale + clientSize;
+                int x2 = (int)cv.getClient().getPosition()[0] * scale + clientSize, y2 = (int)cv.getClient().getPosition()[1] * scale + clientSize;
                 g.setColor(this.truckColor);
                 g.drawLine(x1, y1, x2, y2);
             }
