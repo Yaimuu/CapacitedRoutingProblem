@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Truck {
 
@@ -61,5 +62,27 @@ public class Truck {
 
     public void setQuantite(int quantite) {
         this.quantite = quantite;
+    }
+
+    public void switchClient(Client c1, Client c2)
+    {
+
+    }
+
+    public void twoOpts()
+    {
+        Random rand  = new Random();
+        Client client1 = this.clients.get(rand.nextInt(1, this.clients.size() - 1));
+        int index1 = this.clients.indexOf(client1);
+        int index2;
+        Client client2;
+        do {
+            index2 = this.clients.size() - 1;
+            client2 = this.clients.get(rand.nextInt(1, index2));
+        } while (Math.abs(index1 - this.clients.indexOf(client1)) > 1);
+
+        Client tmp = client1;
+//        this.getClients().set()
+
     }
 }
