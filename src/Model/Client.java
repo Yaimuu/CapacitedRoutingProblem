@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Arrays;
+
 public class Client {
 
     private float[] position = new float[2];
@@ -17,7 +19,7 @@ public class Client {
 
     public int getDistance(Client client)
     {
-        return (int)Math.sqrt(Math.pow(2, client.getPosition()[0] - this.position[0]) + Math.pow(2, client.getPosition()[1] - this.position[1]));
+        return (int)Math.sqrt(Math.pow(this.position[0] - client.getPosition()[0], 2 ) + Math.pow(this.position[1] - client.getPosition()[1], 2));
     }
 
     public float[] getPosition() {
@@ -58,5 +60,16 @@ public class Client {
 
     public void setQuantité(int quantité) {
         this.quantité = quantité;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "position=" + Arrays.toString(position) +
+//                ", next=" + next == null ? null : next.numClient +
+//                ", previous=" + previous == null ? null : previous.numClient +
+                ", numClient=" + numClient +
+                ", quantité=" + quantité +
+                '}';
     }
 }

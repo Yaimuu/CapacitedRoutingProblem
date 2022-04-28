@@ -66,7 +66,9 @@ public class Truck {
 
     public void switchClient(Client c1, Client c2)
     {
-
+        int id1 = this.clients.indexOf(c1), id2 = this.clients.indexOf(c2);
+        this.clients.set(id1, c2);
+        this.clients.set(id2, c1);
     }
 
     public void twoOpts()
