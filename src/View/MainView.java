@@ -28,7 +28,7 @@ public class MainView extends JFrame {
         mainPanel.add(this.courseView);
 
         setContentPane(this.courseView);
-        setSize(800,600);
+        setSize(550,550);
         setVisible(true);
 
     }

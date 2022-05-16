@@ -53,7 +53,31 @@ public class Course {
             newTruck.addClient(client);
         }
         newTruck.addClient(clients.get(0));
+
+        System.out.println("Nb trucks : " + this.trucks.size());
+
         return course;
+    }
+
+    public float computeFitness()
+    {
+        float fitness = 0;
+        for (Truck truck : this.trucks)
+        {
+            fitness += truck.getTruckFitness();
+        }
+        return fitness;
+    }
+
+    public void switchTwoTrucks() {
+        Random rand = new Random();
+        Truck truck1 = this.trucks.get(rand.nextInt(this.trucks.size()));
+        Truck truck2 = this.trucks.get(rand.nextInt(this.trucks.size()));
+
+        Client c1 = truck1.getRandomClient(), c2 = truck2.getRandomClient();
+
+        truck1.updateClient(truck1.getClients().indexOf(c1), c2);
+        truck2.updateClient(truck1.getClients().indexOf(c2), c1);
     }
 
     public List<Client> getAllClients()
@@ -65,21 +89,6 @@ public class Course {
         }
 
         return allClient;
-    }
-
-    public float computeFitness()
-    {
-        float fitness = 0;
-        for (Truck truck : this.trucks) {
-
-            for (int i = 1; i < truck.getClients().size()-2; i++) {
-                Client c1 = truck.getClients().get(i-1), c2 = truck.getClients().get(i);
-                float distance = c1.getDistance(c2);
-                fitness += distance;
-            }
-
-        }
-        return fitness;
     }
 
     public void addTruck(Truck truck)

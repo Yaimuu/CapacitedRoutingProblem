@@ -4,14 +4,10 @@ import Model.Course;
 
 public abstract class MetaHeuristic {
 
-    Course course;
+    Course solution;
 
     MetaHeuristic(Course course) {
-        this.course = course;
+        this.solution = course;
     }
 
-    public void start()
-    {
-
-    }
 }

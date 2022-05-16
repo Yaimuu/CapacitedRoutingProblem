@@ -11,7 +11,8 @@ public class Client {
 
     int numClient, quantité;
 
-    public Client (int numClient, int quantité, float[] position){
+    public Client (int numClient, int quantité, float[] position)
+    {
         this.numClient = numClient;
         this.quantité = quantité;
         this.position = position;
