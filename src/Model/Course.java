@@ -73,15 +73,9 @@ public class Course {
         for (Truck truck : this.trucks) {
 
             for (int i = 1; i < truck.getClients().size()-2; i++) {
-//                System.out.println("Fitness : " + fitness);
-
                 Client c1 = truck.getClients().get(i-1), c2 = truck.getClients().get(i);
                 float distance = c1.getDistance(c2);
                 fitness += distance;
-
-//                System.out.println(c1);
-//                System.out.println(c2);
-//                System.out.println("Distance : " + distance);
             }
 
         }

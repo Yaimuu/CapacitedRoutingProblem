@@ -9,4 +9,9 @@ public abstract class MetaHeuristic {
     MetaHeuristic(Course course) {
         this.course = course;
     }
+
+    public void start()
+    {
+
+    }
 }

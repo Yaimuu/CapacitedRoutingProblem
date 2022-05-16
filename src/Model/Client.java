@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class Client {
 
-    private float[] position = new float[2];
+    private float[] position;
 
     Client next;
     Client previous;
