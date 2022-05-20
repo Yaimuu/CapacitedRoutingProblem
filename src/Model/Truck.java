@@ -140,7 +140,14 @@ public class Truck {
 
         Client[] road1 = {randClients.get(0), c12}, road2 = {randClients.get(1), c22};
 
-//        float minFitness =
+//        float minFitness = Float.MAX_VALUE;
+
+        // A FAIRE
+//        Random rand = new Random();
+//        this.clients.remove(randClients.get(0));
+//        this.clients.add(rand.nextInt(1, this.clients.size()-1), randClients.get(0));
+//        this.clients.remove(randClients.get(1));
+//        this.clients.add(rand.nextInt(1, this.clients.size()-1), randClients.get(1));
     }
 
     public void relocate() {
