@@ -11,21 +11,19 @@ import java.util.List;
 
 public class CourseView extends JPanel {
 
-    private Course course;
-
     private List<TruckView> truckViews;
 
     public CourseView(List<Client> clients)
     {
         this.truckViews = new ArrayList<>();
-        this.course = new Course();
-        this.course.generateCourse(clients);
+        Course course = Course.getInstance();
+//        course.generateCourse(clients);
 
-        for (Truck truck : this.course.getTrucks()) {
+        for (Truck truck : course.getTrucks()) {
             this.truckViews.add(new TruckView(truck));
         }
 
-        System.out.println(this.course.computeFitness());
+        System.out.println(course.computeFitness());
     }
 
     @Override
@@ -40,12 +38,19 @@ public class CourseView extends JPanel {
         g.drawRect(0,0, this.getWidth(), this.getHeight());
     }
 
-    public Course getCourse() {
-        return course;
-    }
+    public void updateTrucks()
+    {
+//        this.truckViews = new ArrayList<>();
+        Course course = Course.getInstance();
+        System.out.println(course.computeFitness());
+//        course.generateCourse(clients);
 
-    public void setCourse(Course course) {
-        this.course = course;
+        for (int i = 0; i < course.getTrucks().size(); i++) {
+            this.truckViews.get(i).setTruck(course.getTrucks().get(i));
+        }
+
+        this.revalidate();
+        this.repaint();
     }
 
     public List<TruckView> getTruckViews() {

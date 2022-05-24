@@ -1,6 +1,7 @@
 package Model;
 
 import Model.MetaHeuristcs.MetaHeuristic;
+import View.CourseView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,28 +9,42 @@ import java.util.Random;
 
 public class Course {
 
+    private static Course instance;
+
     List<Truck> trucks;
     MetaHeuristic metaHeuristic;
+
+    CourseView courseView;
 
     public Course()
     {
         this.trucks = new ArrayList<>();
     }
 
+    public static Course getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new Course();
+            instance.generateCourse();
+        }
+        return instance;
+    }
+
     public Course generateCourse()
     {
         Course course = new Course();
 
-        return course;
+        return generateCourse(CourseFileManager.readFile("./Ressources/Tests/A3205.txt"));
     }
 
     public Course generateCourse(List<Client> clients)
     {
-        Course course = new Course();
+        this.trucks.clear();
         List<Integer> savedClients = new ArrayList<>();
         int idTruck = 0;
         Truck newTruck = new Truck(idTruck);
-        addTruck(newTruck);
+        this.addTruck(newTruck);
         newTruck.addClient(clients.get(0));
 
         for (int i = 1; i < clients.size()-2; i++) {
@@ -47,7 +62,7 @@ public class Course {
                 newTruck.addClient(clients.get(0));
                 newTruck = new Truck(idTruck);
                 newTruck.addClient(clients.get(0));
-                addTruck(newTruck);
+                this.addTruck(newTruck);
             }
 
             newTruck.addClient(client);
@@ -56,7 +71,15 @@ public class Course {
 
         System.out.println("Nb trucks : " + this.trucks.size());
 
-        return course;
+        return this;
+    }
+
+    public void nextStep()
+    {
+//        switchClientsFromTwoTrucks();
+        this.trucks.get(0).twoOpts();
+//        this.generateCourse();
+        this.courseView.updateTrucks();
     }
 
     public float computeFitness()
@@ -69,7 +92,7 @@ public class Course {
         return fitness;
     }
 
-    public void switchTwoTrucks() {
+    public void switchClientsFromTwoTrucks() {
         Random rand = new Random();
         Truck truck1 = this.trucks.get(rand.nextInt(this.trucks.size()));
         Truck truck2 = this.trucks.get(rand.nextInt(this.trucks.size()));
@@ -77,7 +100,7 @@ public class Course {
         Client c1 = truck1.getRandomClient(), c2 = truck2.getRandomClient();
 
         truck1.updateClient(truck1.getClients().indexOf(c1), c2);
-        truck2.updateClient(truck1.getClients().indexOf(c2), c1);
+        truck2.updateClient(truck2.getClients().indexOf(c2), c1);
     }
 
     public List<Client> getAllClients()
@@ -102,5 +125,13 @@ public class Course {
 
     public void setTrucks(List<Truck> trucks) {
         this.trucks = trucks;
+    }
+
+    public CourseView getCourseView() {
+        return courseView;
+    }
+
+    public void setCourseView(CourseView courseView) {
+        this.courseView = courseView;
     }
 }

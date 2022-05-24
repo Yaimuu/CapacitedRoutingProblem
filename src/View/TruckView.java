@@ -46,7 +46,6 @@ public class TruckView extends Canvas {
 
         int scale = Settings.scale;
 
-
         int i = 0;
         ClientView lastClient = null;
 
@@ -67,4 +66,18 @@ public class TruckView extends Canvas {
 
         g.drawRect(0,0, this.getWidth(), this.getHeight());
     }
+
+    public Truck getTruck() {
+        return truck;
+    }
+
+    public void setTruck(Truck truck) {
+        this.truck = truck;
+
+        for (int i = 0; i < this.truck.getClients().size(); i++) {
+            this.clientViews.get(i).setClient(this.truck.getClients().get(i));
+        }
+    }
+
+
 }
