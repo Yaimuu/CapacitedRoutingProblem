@@ -1,5 +1,7 @@
 package Model;
 
+import View.TruckView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +16,8 @@ public class Truck {
     List<Double> distances;
 
     int truckNum, quantite;
+
+
 
     public Truck(int num)
     {
@@ -39,6 +43,11 @@ public class Truck {
         }
 
         return fitness;
+    }
+
+    public void updateView()
+    {
+
     }
 
     public List<Client> getClients() {
@@ -89,11 +98,34 @@ public class Truck {
         return clients;
     }
 
-    public void addClient(Client client) {
-        this.clients.add(client);
-        this.quantite += client.getQuantité();
+    public boolean addClient(Client client) {
+        if(this.quantite + client.getQuantite() <= this.maxCapacity)
+        {
+            this.clients.add(client);
+            this.quantite += client.getQuantite();
+            return true;
+        }
+        return false;
     }
 
+    public void addClients(List<Client> clients)
+    {
+        this.clients.addAll(this.clients.size() - 2, clients);
+    }
+
+    public void removeClient(Client client) {
+        if(this.clients.contains(client))
+        {
+            this.quantite -= client.getQuantite();
+            this.clients.remove(client);
+        }
+    }
+
+    /**
+     * Echange de 2 clients voulu au sein d'une même tournée
+     * @param c1
+     * @param c2
+     */
     public void switchClient(Client c1, Client c2)
     {
         int id1 = this.clients.indexOf(c1), id2 = this.clients.indexOf(c2);
@@ -101,6 +133,9 @@ public class Truck {
         this.clients.set(id2, c1);
     }
 
+    /**
+     * Echange de 2 clients aléatoire au sein d'une même tournée
+      */
     public void exchangeClients()
     {
         Random rand  = new Random();
@@ -119,20 +154,16 @@ public class Truck {
 
     public void twoOpts()
     {
-        System.out.println("twoOpts start");
-        List<Client> randClients = this.getRandomClients(2, 1, this.clients.size() - 2);
-        int indStart = this.clients.indexOf(randClients.get(0)), indEnd = this.clients.indexOf(randClients.get(1));
-        if(indStart > indEnd)
-        {
-            int tmp = indEnd;
-            indEnd = indStart;
-            indStart = tmp;
-        }
+        Random rand = new Random();
+        int indStart = rand.nextInt(1, this.clients.size() - 3), indEnd = rand.nextInt(indStart + 2, this.clients.size() - 1);
+
         System.out.println("start : " + indStart + " - end : " + indEnd);
         Collections.reverse(this.clients.subList(indStart, indEnd));
-        System.out.println("twoOpts finished");
     }
 
+    /**
+     * Changement de l'ordre de passage d'un client dans une tournée
+     */
     public void relocate() {
         Client client = this.getRandomClient();
         int indexCli = this.clients.indexOf(client);
@@ -145,6 +176,8 @@ public class Truck {
         this.clients.remove(client);
         this.clients.add(indexNext, client);
     }
+
+
 
     public List<Double> getDistances() {
         return distances;

@@ -9,14 +9,13 @@ import java.util.Random;
 
 public class ClientView extends Canvas {
 
-    private final Random rand = new Random();
-
     private Client client;
 
     private int clientSize;
     private Color clientColor;
 
     public ClientView(Client client) {
+        Random rand = new Random();
         this.client = client;
         this.clientSize = 10;
         this.clientColor = new Color(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));

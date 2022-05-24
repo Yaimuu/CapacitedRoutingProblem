@@ -9,12 +9,12 @@ public class Client {
     Client next;
     Client previous;
 
-    int numClient, quantité;
+    int numClient, quantite;
 
-    public Client (int numClient, int quantité, float[] position)
+    public Client (int numClient, int quantite, float[] position)
     {
         this.numClient = numClient;
-        this.quantité = quantité;
+        this.quantite = quantite;
         this.position = position;
     }
 
@@ -55,12 +55,12 @@ public class Client {
         this.numClient = numClient;
     }
 
-    public int getQuantité() {
-        return quantité;
+    public int getQuantite() {
+        return quantite;
     }
 
-    public void setQuantité(int quantité) {
-        this.quantité = quantité;
+    public void setQuantite(int quantite) {
+        this.quantite = quantite;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Client {
 //                ", next=" + next == null ? null : next.numClient +
 //                ", previous=" + previous == null ? null : previous.numClient +
                 ", numClient=" + numClient +
-                ", quantité=" + quantité +
+                ", quantité=" + quantite +
                 '}';
     }
 }

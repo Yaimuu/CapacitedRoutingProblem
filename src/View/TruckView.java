@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class TruckView extends Canvas {
@@ -50,7 +51,7 @@ public class TruckView extends Canvas {
         ClientView lastClient = null;
 
         for (ClientView cv : this.clientViews) {
-            cv.paint(g);
+//            cv.paint(g);
 
             if(i > 0)
             {
@@ -79,5 +80,26 @@ public class TruckView extends Canvas {
         }
     }
 
+    public void udpateClients(Truck newTruck)
+    {
+        this.truck = truck;
+        this.clientViews = new ArrayList<>();
 
+        for (Client client : this.truck.getClients()) {
+            this.clientViews.add(new ClientView(client));
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TruckView truckView = (TruckView) o;
+        return truck.equals(truckView.truck);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(truck);
+    }
 }

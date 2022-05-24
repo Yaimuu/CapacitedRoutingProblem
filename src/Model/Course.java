@@ -76,7 +76,10 @@ public class Course {
 
     public void nextStep()
     {
-        switchClientsFromTwoTrucks();
+//        mergeTrucks();
+//        switchClientsFromTwoTrucks();
+//        this.trucks.get(0).twoOpts();
+        addClientToOtherTruck();
 //        this.trucks.get(0).twoOpts();
 //        this.generateCourse();
         this.courseView.updateTrucks();
@@ -92,6 +95,9 @@ public class Course {
         return fitness;
     }
 
+    /**
+     * Echange de clients entre 2 tournées
+     */
     public void switchClientsFromTwoTrucks() {
         Random rand = new Random();
         Truck truck1 = this.trucks.get(rand.nextInt(this.trucks.size()));
@@ -101,6 +107,38 @@ public class Course {
 
         truck1.updateClient(truck1.getClients().indexOf(c1), c2);
         truck2.updateClient(truck2.getClients().indexOf(c2), c1);
+    }
+
+    /**
+     * On prend un client d'une tournée et on le met dans une autre tournée
+     */
+    public void addClientToOtherTruck()
+    {
+        Random rand = new Random();
+        Truck truck1 = this.trucks.get(rand.nextInt(this.trucks.size()));
+        Truck truck2 = this.trucks.get(rand.nextInt(this.trucks.size()));
+        Client c1 = truck1.getRandomClient();
+        if(truck2.addClient(c1))
+        {
+            truck1.removeClient(c1);
+        }
+    }
+
+    /**
+     * Fusion de 2 tournées
+     */
+    public void mergeTrucks()
+    {
+        Random rand = new Random();
+        Truck truck1 = this.trucks.get(rand.nextInt(this.trucks.size()));
+        Truck truck2 = this.trucks.get(rand.nextInt(this.trucks.size()));
+
+        if(truck1.getQuantite() + truck2.getQuantite() <= truck2.getMaxCapacity())
+        {
+            truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 2));
+            this.getTrucks().remove(truck1);
+        }
+
     }
 
     public List<Client> getAllClients()
