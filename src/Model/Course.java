@@ -76,8 +76,8 @@ public class Course {
 
     public void nextStep()
     {
-//        switchClientsFromTwoTrucks();
-        this.trucks.get(0).twoOpts();
+        switchClientsFromTwoTrucks();
+//        this.trucks.get(0).twoOpts();
 //        this.generateCourse();
         this.courseView.updateTrucks();
     }

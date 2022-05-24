@@ -79,7 +79,7 @@ public class Truck {
 
             if(nbClients < this.clients.size())
             {
-                while(!clients.contains(c)) {
+                while(clients.contains(c)) {
                     c = this.getRandomClient(min, range);
                 }
             }
@@ -119,11 +119,18 @@ public class Truck {
 
     public void twoOpts()
     {
-        List<Client> randClients = this.getRandomClients(2, 1, this.clients.size() - 3);
+        System.out.println("twoOpts start");
+        List<Client> randClients = this.getRandomClients(2, 1, this.clients.size() - 2);
         int indStart = this.clients.indexOf(randClients.get(0)), indEnd = this.clients.indexOf(randClients.get(1));
-//        Client c12 = this.clients.get(index1 + 1), c22 = this.clients.get(index2 + 1);
-//        Client[] road1 = {randClients.get(0), c12}, road2 = {randClients.get(1), c22};
+        if(indStart > indEnd)
+        {
+            int tmp = indEnd;
+            indEnd = indStart;
+            indStart = tmp;
+        }
+        System.out.println("start : " + indStart + " - end : " + indEnd);
         Collections.reverse(this.clients.subList(indStart, indEnd));
+        System.out.println("twoOpts finished");
     }
 
     public void relocate() {
