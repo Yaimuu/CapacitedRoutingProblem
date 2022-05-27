@@ -133,6 +133,8 @@ public class Course {
         if(truck2.addClient(c1))
         {
             truck1.removeClient(c1);
+            if(truck1.getClients().size() <= 2)
+                this.trucks.remove(truck1);
         }
 
 //        System.out.println("truck1");
