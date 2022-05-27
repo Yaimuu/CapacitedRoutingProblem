@@ -88,10 +88,11 @@ public class Course {
 
     public void nextStep()
     {
-//        mergeTrucks();
+        //mergeTrucks();
 //        switchClientsFromTwoTrucks();
 //        this.trucks.get(0).twoOpts();
-        addClientToOtherTruck();
+        //addClientToOtherTruck();
+        exchangePartsOfTrucks();
 //        this.trucks.get(0).twoOpts();
 //        this.generateCourse();
         this.updateView();
@@ -169,17 +170,12 @@ public class Course {
         trucks.add(this.trucks.get(rand.nextInt(this.trucks.size())));
 
         List<Integer> numberOfClients = new ArrayList<>();
-        numberOfClients.add(rand.nextInt(trucks.get(0).getClients().size() - 2));
-        numberOfClients.add(rand.nextInt(trucks.get(1).getClients().size() - 2));
+        numberOfClients.add(rand.nextInt(1,trucks.get(0).getClients().size() - 1));
+        numberOfClients.add(rand.nextInt(1,trucks.get(1).getClients().size() - 1));
 
         List<Integer> startIndex = new ArrayList<>();
-        startIndex.add(rand.nextInt(trucks.get(0).getClients().size() - 2));
-        startIndex.add(rand.nextInt(trucks.get(1).getClients().size() - 2));
-
-        while (numberOfClients.get(0) > startIndex.get(0) || numberOfClients.get(1) > startIndex.get(1)) {
-            startIndex.set(0, rand.nextInt(trucks.get(0).getClients().size() - 2));
-            startIndex.set(1, rand.nextInt(trucks.get(1).getClients().size() - 2));
-        }
+        startIndex.add(rand.nextInt(1,trucks.get(0).getClients().size() - 1));
+        startIndex.add(rand.nextInt(1,trucks.get(1).getClients().size() - 1));
 
         List<Client> clients1 = new ArrayList<>();
         List<Client> clients2 = new ArrayList<>();
@@ -195,7 +191,6 @@ public class Course {
                     capacite2 += trucks.get(i).clients.get(k).getQuantite();
                 }
             }
-
 
             if (trucks.get(0).getQuantite() + capacite1 < trucks.get(0).getMaxCapacity() && trucks.get(1).getQuantite() + capacite2 < trucks.get(1).getMaxCapacity()) {
                 trucks.get(0).clients.removeAll(clients1);
