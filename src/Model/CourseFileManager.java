@@ -10,8 +10,6 @@ import java.util.Scanner;
 
 public class CourseFileManager {
 
-
-
     public static List<Client> readFile(String file)
     {
         List<Client> clientList = new ArrayList<>();

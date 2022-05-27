@@ -19,6 +19,8 @@ public class Course {
     public Course()
     {
         this.trucks = new ArrayList<>();
+
+        Settings.generateRandomPalette(100);
     }
 
     public static Course getInstance()
@@ -35,7 +37,12 @@ public class Course {
     {
         Course course = new Course();
 
-        return generateCourse(CourseFileManager.readFile("./Ressources/Tests/A3205.txt"));
+        return generateCourse("A3205.txt");
+    }
+
+    public Course generateCourse(String filename)
+    {
+        return generateCourse(CourseFileManager.readFile("./Ressources/Tests/" + filename));
     }
 
     public Course generateCourse(List<Client> clients)
@@ -47,12 +54,12 @@ public class Course {
         this.addTruck(newTruck);
         newTruck.addClient(clients.get(0));
 
-        for (int i = 1; i < clients.size()-2; i++) {
+        for (int i = 1; i < clients.size(); i++) {
             Random rand = new Random();
-            int clientId = rand.nextInt(1, clients.size()-2);
+            int clientId = rand.nextInt(1, clients.size());
             while (savedClients.contains(clientId))
             {
-                clientId = rand.nextInt(1, clients.size()-2);
+                clientId = rand.nextInt(1, clients.size());
             }
             savedClients.add(clientId);
             Client client = clients.get(clientId);
@@ -71,6 +78,11 @@ public class Course {
 
         System.out.println("Nb trucks : " + this.trucks.size());
 
+        for (Truck t:
+             this.trucks) {
+            System.out.println(t);
+        }
+
         return this;
     }
 
@@ -82,7 +94,7 @@ public class Course {
         addClientToOtherTruck();
 //        this.trucks.get(0).twoOpts();
 //        this.generateCourse();
-        this.courseView.updateTrucks();
+        this.updateView();
     }
 
     public float computeFitness()
@@ -122,6 +134,11 @@ public class Course {
         {
             truck1.removeClient(c1);
         }
+
+//        System.out.println("truck1");
+//        System.out.println(truck1.clients.toString());
+//        System.out.println("truck2");
+//        System.out.println(truck2.clients.toString());
     }
 
     /**
@@ -138,7 +155,54 @@ public class Course {
             truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 2));
             this.getTrucks().remove(truck1);
         }
+    }
 
+    /***
+     * Echange de morceau de tournée entre 2 camions
+     */
+    public void exchangePartsOfTrucks() {
+        Random rand = new Random();
+        List<Truck> trucks = new ArrayList<>();
+        trucks.add(this.trucks.get(rand.nextInt(this.trucks.size())));
+        trucks.add(this.trucks.get(rand.nextInt(this.trucks.size())));
+
+        List<Integer> numberOfClients = new ArrayList<>();
+        numberOfClients.add(rand.nextInt(trucks.get(0).getClients().size() - 2));
+        numberOfClients.add(rand.nextInt(trucks.get(1).getClients().size() - 2));
+
+        List<Integer> startIndex = new ArrayList<>();
+        startIndex.add(rand.nextInt(trucks.get(0).getClients().size() - 2));
+        startIndex.add(rand.nextInt(trucks.get(1).getClients().size() - 2));
+
+        while (numberOfClients.get(0) > startIndex.get(0) || numberOfClients.get(1) > startIndex.get(1)) {
+            startIndex.set(0, rand.nextInt(trucks.get(0).getClients().size() - 2));
+            startIndex.set(1, rand.nextInt(trucks.get(1).getClients().size() - 2));
+        }
+
+        List<Client> clients1 = new ArrayList<>();
+        List<Client> clients2 = new ArrayList<>();
+        int capacite1 = 0, capacite2 = 0;
+
+        for (int i = 0; i < 2; i++) {
+            for (int k = startIndex.get(i); k < numberOfClients.get(i); k++) {
+                if (i == 0) {
+                    clients1.add(trucks.get(i).clients.get(k));
+                    capacite1 += trucks.get(i).clients.get(k).getQuantite();
+                } else {
+                    clients2.add(trucks.get(i).clients.get(k));
+                    capacite2 += trucks.get(i).clients.get(k).getQuantite();
+                }
+            }
+
+
+            if (trucks.get(0).getQuantite() + capacite1 < trucks.get(0).getMaxCapacity() && trucks.get(1).getQuantite() + capacite2 < trucks.get(1).getMaxCapacity()) {
+                trucks.get(0).clients.removeAll(clients1);
+                trucks.get(0).clients.addAll(clients1);
+
+                trucks.get(1).clients.removeAll(clients2);
+                trucks.get(1).clients.addAll(clients2);
+            }
+        }
     }
 
     public List<Client> getAllClients()
@@ -150,6 +214,11 @@ public class Course {
         }
 
         return allClient;
+    }
+
+    public void updateView()
+    {
+        this.courseView.updateTrucks();
     }
 
     public void addTruck(Truck truck)

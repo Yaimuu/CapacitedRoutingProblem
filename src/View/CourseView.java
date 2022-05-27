@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseView extends JPanel {
+public class CourseView extends View {
 
     private List<TruckView> truckViews;
     private List<ClientView> clientViews;
@@ -51,13 +51,14 @@ public class CourseView extends JPanel {
 
     public void updateTrucks()
     {
-//        this.truckViews = new ArrayList<>();
+        this.truckViews.clear();
         Course course = Course.getInstance();
         System.out.println(course.computeFitness());
 //        course.generateCourse(clients);
 
         for (int i = 0; i < course.getTrucks().size(); i++) {
-            this.truckViews.get(i).setTruck(course.getTrucks().get(i));
+//            this.truckViews.get(i).setTruck(course.getTrucks().get(i));
+            this.truckViews.add(new TruckView(course.getTrucks().get(i)));
         }
 
         this.revalidate();

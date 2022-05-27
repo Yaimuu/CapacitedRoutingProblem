@@ -45,6 +45,8 @@ public class TruckView extends Canvas {
     {
         super.paint(g);
 
+        Graphics2D g2 = (Graphics2D) g;
+
         int scale = Settings.scale;
 
         int i = 0;
@@ -58,8 +60,9 @@ public class TruckView extends Canvas {
                 int clientSize = lastClient.getClientSize()/2;
                 int x1 = (int)lastClient.getClient().getPosition()[0] * scale + clientSize, y1 = (int)lastClient.getClient().getPosition()[1] * scale + clientSize;
                 int x2 = (int)cv.getClient().getPosition()[0] * scale + clientSize, y2 = (int)cv.getClient().getPosition()[1] * scale + clientSize;
-                g.setColor(this.truckColor);
-                g.drawLine(x1, y1, x2, y2);
+                g2.setColor(this.truckColor);
+                g2.setStroke(new BasicStroke(3));
+                g2.drawLine(x1, y1, x2, y2);
             }
             lastClient = cv;
             i++;

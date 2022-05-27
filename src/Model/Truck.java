@@ -17,8 +17,6 @@ public class Truck {
 
     int truckNum, quantite;
 
-
-
     public Truck(int num)
     {
         this.clients = new ArrayList<>();
@@ -47,7 +45,7 @@ public class Truck {
 
     public void updateView()
     {
-
+        Course.getInstance().updateView();
     }
 
     public List<Client> getClients() {
@@ -101,7 +99,8 @@ public class Truck {
     public boolean addClient(Client client) {
         if(this.quantite + client.getQuantite() <= this.maxCapacity)
         {
-            this.clients.add(client);
+            int id = this.clients.size()!=0 && client.getNumClient() != 0?this.clients.size()-1:0;
+            this.clients.add(id, client);
             this.quantite += client.getQuantite();
             return true;
         }
@@ -110,7 +109,7 @@ public class Truck {
 
     public void addClients(List<Client> clients)
     {
-        this.clients.addAll(this.clients.size() - 2, clients);
+        this.clients.addAll(this.clients.size()-1, clients);
     }
 
     public void removeClient(Client client) {
@@ -215,5 +214,15 @@ public class Truck {
 
     public int getMaxCapacity() {
         return maxCapacity;
+    }
+
+    @Override
+    public String toString() {
+        return "Truck{" +
+                "maxCapacity=" + maxCapacity +
+                ", clients=" + clients +
+                ", truckNum=" + truckNum +
+                ", quantite=" + quantite +
+                '}';
     }
 }

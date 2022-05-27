@@ -31,22 +31,25 @@ public class ClientView extends Canvas {
     public void paint(Graphics g)
     {
         super.paint(g);
+
+        Graphics2D g2 = (Graphics2D) g;
+
         int scale = Settings.scale;
         int x = (int)client.getPosition()[0] * scale, y = (int)client.getPosition()[1] * scale;
         if(this.client.getNumClient() == 0)
         {
-            g.setColor(Color.BLACK);
-            g.fillOval(x, y, clientSize*2, clientSize*2);
-            g.drawOval(x, y, clientSize*2, clientSize*2);
+            g2.setColor(Color.BLACK);
+            g2.fillOval(x, y, clientSize*2, clientSize*2);
+            g2.drawOval(x, y, clientSize*2, clientSize*2);
         }
         else
         {
-            g.setColor(this.clientColor);
-            g.fillOval(x, y, clientSize, clientSize);
-            g.drawOval(x, y, clientSize, clientSize);
+            g2.setColor(this.clientColor);
+            g2.fillOval(x, y, clientSize, clientSize);
+            g2.drawOval(x, y, clientSize, clientSize);
         }
-
-        g.drawRect(0,0, this.getWidth(), this.getHeight());
+        g2.drawString(client.getNumClient() + "", x, y);
+        g2.drawRect(0,0, this.getWidth(), this.getHeight());
     }
 
     public Client getClient() {
