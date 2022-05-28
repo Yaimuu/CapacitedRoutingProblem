@@ -1,6 +1,7 @@
 package Model;
 
 import Model.MetaHeuristcs.MetaHeuristic;
+import Model.Neighborhood.Neighborhood;
 import View.CourseView;
 
 import java.util.ArrayList;
@@ -88,11 +89,13 @@ public class Course {
 
     public void nextStep()
     {
+        Neighborhood test = new Neighborhood(this);
+        test.exchangePartsOfTrucks();
 //        mergeTrucks();
 //        switchClientsFromTwoTrucks();
 //        this.trucks.get(0).twoOpts();
 //        addClientToOtherTruck();
-        this.trucks.get(0).relocate();
+//        this.trucks.get(0).relocate();
 //        this.generateCourse();
 //        exchangePartsOfTrucks();
         this.updateView();
@@ -106,133 +109,6 @@ public class Course {
             fitness += truck.getTruckFitness();
         }
         return fitness;
-    }
-
-    /**
-     * Echange de clients entre 2 tournées
-     */
-    public void switchClientsFromTwoTrucks() {
-        Random rand = new Random();
-        Truck truck1 = this.trucks.get(rand.nextInt(this.trucks.size()));
-        Truck truck2 = this.trucks.get(rand.nextInt(this.trucks.size()));
-
-        Client c1 = truck1.getRandomClient(), c2 = truck2.getRandomClient();
-
-        truck1.updateClient(truck1.getClients().indexOf(c1), c2);
-        truck2.updateClient(truck2.getClients().indexOf(c2), c1);
-    }
-
-    /**
-     * On prend un client d'une tournée et on le met dans une autre tournée
-     */
-    public void addClientToOtherTruck()
-    {
-        Random rand = new Random();
-        Truck truck1 = this.trucks.get(rand.nextInt(this.trucks.size()));
-        Truck truck2 = this.trucks.get(rand.nextInt(this.trucks.size()));
-        Client c1 = truck1.getRandomClient();
-        if(truck2.addClient(c1))
-        {
-            truck1.removeClient(c1);
-            if(truck1.getClients().size() <= 2)
-                this.trucks.remove(truck1);
-        }
-
-//        System.out.println("truck1");
-//        System.out.println(truck1.clients.toString());
-//        System.out.println("truck2");
-//        System.out.println(truck2.clients.toString());
-    }
-
-    /**
-     * Fusion de 2 tournées
-     */
-    public void mergeTrucks()
-    {
-        Random rand = new Random();
-        Truck truck1 = this.trucks.get(rand.nextInt(this.trucks.size()));
-        Truck truck2 = this.trucks.get(rand.nextInt(this.trucks.size()));
-
-        System.out.println(truck1.toString());
-        System.out.println(truck2.toString());
-
-        if(truck1.getQuantite() + truck2.getQuantite() <= truck2.getMaxCapacity())
-        {
-            truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 2));
-            this.getTrucks().remove(truck1);
-        }
-
-        System.out.println(truck2.toString());
-    }
-
-    /***
-     * Echange de morceau de tournée entre 2 camions
-     */
-    public void exchangePartsOfTrucks() {
-        Random rand = new Random();
-        List<Truck> trucks = new ArrayList<>();
-        trucks.add(this.trucks.get(rand.nextInt(this.trucks.size())));
-        trucks.add(this.trucks.get(rand.nextInt(this.trucks.size())));
-
-        while(trucks.get(0) == trucks.get(1))
-        {
-            trucks.set(1, this.trucks.get(rand.nextInt(this.trucks.size())));
-        }
-
-        List<Integer> endIndex = new ArrayList<>();
-        endIndex.add(rand.nextInt(1,trucks.get(0).getClients().size() - 1));
-        endIndex.add(rand.nextInt(1,trucks.get(1).getClients().size() - 1));
-
-        List<Integer> startIndex = new ArrayList<>();
-        startIndex.add(rand.nextInt(1,trucks.get(0).getClients().size() - 1));
-        startIndex.add(rand.nextInt(1,trucks.get(1).getClients().size() - 1));
-
-        while(startIndex.get(0) > endIndex.get(0) || startIndex.get(1) > endIndex.get(1))
-        {
-            endIndex.set(0, rand.nextInt(1,trucks.get(0).getClients().size() - 1));
-            endIndex.set(1, rand.nextInt(1,trucks.get(1).getClients().size() - 1));
-        }
-
-        List<Client> clients1 = new ArrayList<>();
-        List<Client> clients2 = new ArrayList<>();
-        int capacite1 = 0, capacite2 = 0;
-
-        for (int i = 0; i < 2; i++) {
-            for (int k = startIndex.get(i); k <= endIndex.get(i); k++) {
-                if (i == 0) {
-                    clients1.add(trucks.get(i).clients.get(k));
-                    capacite1 += trucks.get(i).clients.get(k).getQuantite();
-                } else {
-                    clients2.add(trucks.get(i).clients.get(k));
-                    capacite2 += trucks.get(i).clients.get(k).getQuantite();
-                }
-            }
-        }
-
-        if (trucks.get(0).getQuantite() - capacite1 + capacite2 < trucks.get(0).getMaxCapacity() && trucks.get(1).getQuantite() - capacite2 + capacite1 < trucks.get(1).getMaxCapacity()) {
-            System.out.println("Avant : ");
-            for (int i = 0; i < 2; i++)
-            {
-                System.out.println("Numéro de camion : " +trucks.get(i).truckNum + " - liste clients : " + trucks.get(i).clients);
-            }
-            Client c1 = trucks.get(0).clients.get(trucks.get(0).clients.size()-1);
-            trucks.get(0).clients.removeAll(clients1);
-            trucks.get(0).clients.remove(trucks.get(0).clients.size()-1);
-            trucks.get(0).clients.addAll(clients2);
-            trucks.get(0).clients.add(c1);
-
-            Client c2 = trucks.get(1).clients.get(trucks.get(1).clients.size()-1);
-            trucks.get(1).clients.removeAll(clients2);
-            trucks.get(1).clients.remove(trucks.get(1).clients.size()-1);
-            trucks.get(1).clients.addAll(clients1);
-            trucks.get(1).clients.add(c2);
-
-            System.out.println("Après : ");
-            for (int j = 0; j < 2; j++)
-            {
-                System.out.println("Numéro de camion : " +trucks.get(j).truckNum + " - liste clients : " + trucks.get(j).clients);
-            }
-        }
     }
 
     public List<Client> getAllClients()

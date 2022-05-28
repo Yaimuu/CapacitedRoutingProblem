@@ -4,30 +4,69 @@ import Model.Client;
 import Model.Course;
 import Model.Truck;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 enum NeighborhoodType {
+    INVERT_CLIENTS_2TRUCKS("switchClientsFromTwoTrucks"),
+    MOVE_CLIENT("addClientToOtherTruck"),
+    MERGE_CLIENTS("mergeTrucks"),
+    EXCHANGE_PART_TRUCKS("exchangePartsOfTrucks"),
+    INVERT_CLIENTS_1TRUCK("exchangeClients"),
+    TWO_OPTS("twoOpts"),
+    RELOCATE("relocate")
+    ;
 
+    private final String text;
+
+    /**
+     * @param text
+     */
+    NeighborhoodType(final String text) {
+        this.text = text;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Enum#toString()
+     */
+    @Override
+    public String toString() {
+        return text;
+    }
 }
 
 public class Neighborhood {
 
     private Course course;
+    private NeighborhoodType currentMethod;
 
-
-    Neighborhood() {
-
+    public Neighborhood() {
+        setRandomMethod();
     }
 
-    Neighborhood(Course course) {
+    public Neighborhood(Course course) {
+        this();
+
         this.course = course;
     }
 
+    public void setRandomMethod() {
+        int pick = new Random().nextInt(NeighborhoodType.values().length);
+        this.currentMethod = NeighborhoodType.values()[pick];
+    }
+
+    public void useMethod() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        System.out.println("Method used : " + currentMethod);
+        Method method = this.getClass().getMethod(currentMethod.toString());
+        method.invoke(this);
+    }
+
     /**
-     * Echange de clients entre 2 tournées
+     * Inversion entre 1 client de 2 tournées différentes
      */
     public void switchClientsFromTwoTrucks() {
         Random rand = new Random();
@@ -154,23 +193,17 @@ public class Neighborhood {
     }
 
     /**
-     * Echange de 2 clients voulu au sein d'une même tournée
-     * @param c1
-     * @param c2
-     */
-    public void switchClient(Client c1, Client c2, Truck truck)
-    {
-        int id1 = truck.getClients().indexOf(c1), id2 = truck.getClients().indexOf(c2);
-        truck.getClients().set(id1, c2);
-        truck.getClients().set(id2, c1);
-    }
-
-    /**
      * Echange de 2 clients aléatoire au sein d'une même tournée
      */
+    public void exchangeClients() {
+        Truck truck = getRandomTruck();
+        exchangeClients(truck);
+    }
+
     public void exchangeClients(Truck truck)
     {
         Random rand  = new Random();
+
         Client client1 = truck.getClients().get(rand.nextInt(1, truck.getClients().size() - 1));
         int index1 = truck.getClients().indexOf(client1);
         int index2;
@@ -180,7 +213,13 @@ public class Neighborhood {
             client2 = truck.getClients().get(rand.nextInt(1, index2));
         } while (Math.abs(index1 - truck.getClients().indexOf(client1)) > 1);
 
-        switchClient(client1, client2, truck);
+        truck.switchClient(client1, client2);
+    }
+
+    public void twoOpts()
+    {
+        Truck truck = getRandomTruck();
+        twoOpts(truck);
     }
 
     public void twoOpts(Truck truck)
@@ -195,6 +234,11 @@ public class Neighborhood {
     /**
      * Changement de l'ordre de passage d'un client dans une tournée
      */
+    public void relocate() {
+        Truck truck = getRandomTruck();
+        relocate(truck);
+    }
+
     public void relocate(Truck truck) {
         Client client = truck.getRandomClient();
         int indexCli = truck.getClients().indexOf(client);
@@ -211,5 +255,15 @@ public class Neighborhood {
     public List<Truck> getTrucks()
     {
         return this.course.getTrucks();
+    }
+
+    public Truck getRandomTruck()
+    {
+        Random rand  = new Random();
+        return this.course.getTrucks().get(rand.nextInt(this.course.getTrucks().size()));
+    }
+
+    public NeighborhoodType getCurrentMethod() {
+        return currentMethod;
     }
 }

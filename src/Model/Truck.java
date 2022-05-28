@@ -17,30 +17,71 @@ public class Truck {
 
     int truckNum, quantite;
 
+    float fitness = 0f;
+
     public Truck(int num)
     {
         this.clients = new ArrayList<>();
         this.distances = new ArrayList<>();
         this.truckNum = num;
         this.quantite = 0;
+        this.fitness = computeFitness();
     }
 
     public Truck(int num, List<Client> clients)
     {
         this(num);
         this.clients = clients;
+
+        this.fitness = computeFitness();
     }
 
     public float getTruckFitness() {
-        float fitness = 0;
+//        float fitness = 0;
+//
+//        for (int i = 1; i < this.clients.size(); i++) {
+//            Client c1 = this.clients.get(i-1), c2 = this.clients.get(i);
+//            float distance = c1.getDistance(c2);
+//            fitness += distance;
+//        }
+
+        return fitness;
+    }
+
+    public float computeFitness()
+    {
+        float localFitness = 0;
 
         for (int i = 1; i < this.clients.size(); i++) {
             Client c1 = this.clients.get(i-1), c2 = this.clients.get(i);
             float distance = c1.getDistance(c2);
-            fitness += distance;
+            localFitness += distance;
         }
 
-        return fitness;
+        return localFitness;
+    }
+
+    public float computeFitness(Client start, Client end)
+    {
+        float localFitness = 0;
+        int i1 = this.clients.indexOf(start), i2 = this.clients.indexOf(end);
+
+        computeFitness(i1, i2);
+
+        return localFitness;
+    }
+
+    public float computeFitness(int start, int end)
+    {
+        float localFitness = 0;
+
+        for (int i = start; i < end-1; i++) {
+            Client c1 = this.clients.get(i), c2 = this.clients.get(i+1);
+            float distance = c1.getDistance(c2);
+            localFitness += distance;
+        }
+
+        return localFitness;
     }
 
     public void updateView()
@@ -102,6 +143,8 @@ public class Truck {
             int id = this.clients.size()!=0 && client.getNumClient() != 0?this.clients.size()-1:0;
             this.clients.add(id, client);
             this.quantite += client.getQuantite();
+
+            this.fitness += computeFitness(id, clients.size());
             return true;
         }
         return false;
@@ -109,12 +152,15 @@ public class Truck {
 
     public void addClients(List<Client> clients)
     {
-        this.clients.addAll(this.clients.size()-1, clients);
+        int id = this.clients.size()-1;
+        this.fitness += computeFitness(id, clients.size());
+        this.clients.addAll(id, clients);
     }
 
     public void removeClient(Client client) {
         if(this.clients.contains(client))
         {
+            this.fitness -= computeFitness(client, this.clients.get(this.clients.size()));
             this.quantite -= client.getQuantite();
             this.clients.remove(client);
         }
@@ -131,52 +177,6 @@ public class Truck {
         this.clients.set(id1, c2);
         this.clients.set(id2, c1);
     }
-
-    /**
-     * Echange de 2 clients aléatoire au sein d'une même tournée
-      */
-    public void exchangeClients()
-    {
-        Random rand  = new Random();
-        Client client1 = this.clients.get(rand.nextInt(1, this.clients.size() - 1));
-        int index1 = this.clients.indexOf(client1);
-        int index2;
-        Client client2;
-        do {
-            index2 = this.clients.size() - 1;
-            client2 = this.clients.get(rand.nextInt(1, index2));
-        } while (Math.abs(index1 - this.clients.indexOf(client1)) > 1);
-
-        this.getClients().set(index1, client2);
-        this.getClients().set(index2, client1);
-    }
-
-    public void twoOpts()
-    {
-        Random rand = new Random();
-        int indStart = rand.nextInt(1, this.clients.size() - 3), indEnd = rand.nextInt(indStart + 2, this.clients.size() - 1);
-
-        System.out.println("start : " + indStart + " - end : " + indEnd);
-        Collections.reverse(this.clients.subList(indStart, indEnd));
-    }
-
-    /**
-     * Changement de l'ordre de passage d'un client dans une tournée
-     */
-    public void relocate() {
-        Client client = this.getRandomClient();
-        int indexCli = this.clients.indexOf(client);
-        int indexNext = indexCli;
-        while(indexNext == indexCli) {
-            Client client2 = this.getRandomClient();
-            indexNext = this.clients.indexOf(client2);
-        }
-
-        this.clients.remove(client);
-        this.clients.add(indexNext, client);
-    }
-
-
 
     public List<Double> getDistances() {
         return distances;
