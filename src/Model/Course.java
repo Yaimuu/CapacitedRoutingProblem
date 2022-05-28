@@ -92,9 +92,9 @@ public class Course {
 //        switchClientsFromTwoTrucks();
 //        this.trucks.get(0).twoOpts();
 //        addClientToOtherTruck();
-//        this.trucks.get(0).twoOpts();
+        this.trucks.get(0).relocate();
 //        this.generateCourse();
-        exchangePartsOfTrucks();
+//        exchangePartsOfTrucks();
         this.updateView();
     }
 
@@ -213,7 +213,7 @@ public class Course {
             System.out.println("Avant : ");
             for (int i = 0; i < 2; i++)
             {
-                System.out.println("Numéro de camion :" +trucks.get(i).truckNum + "liste clients : " + trucks.get(i).clients);
+                System.out.println("Numéro de camion : " +trucks.get(i).truckNum + " - liste clients : " + trucks.get(i).clients);
             }
             Client c1 = trucks.get(0).clients.get(trucks.get(0).clients.size()-1);
             trucks.get(0).clients.removeAll(clients1);
@@ -230,7 +230,7 @@ public class Course {
             System.out.println("Après : ");
             for (int j = 0; j < 2; j++)
             {
-                System.out.println("Numéro de camion :" +trucks.get(j).truckNum + "liste clients : " + trucks.get(j).clients);
+                System.out.println("Numéro de camion : " +trucks.get(j).truckNum + " - liste clients : " + trucks.get(j).clients);
             }
         }
     }

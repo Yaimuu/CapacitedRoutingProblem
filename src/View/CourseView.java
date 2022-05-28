@@ -2,6 +2,7 @@ package View;
 
 import Model.Client;
 import Model.Course;
+import Model.Settings;
 import Model.Truck;
 
 import javax.swing.*;
@@ -19,11 +20,8 @@ public class CourseView extends View {
         this.truckViews = new ArrayList<>();
         this.clientViews = new ArrayList<>();
         Course course = Course.getInstance();
-//        course.generateCourse(clients);
 
-        for (Truck truck : course.getTrucks()) {
-            this.truckViews.add(new TruckView(truck));
-        }
+        updateTrucks();
 
         for (Client c : clients) {
             this.clientViews.add(new ClientView(c));
@@ -54,11 +52,11 @@ public class CourseView extends View {
         this.truckViews.clear();
         Course course = Course.getInstance();
         System.out.println(course.computeFitness());
-//        course.generateCourse(clients);
 
         for (int i = 0; i < course.getTrucks().size(); i++) {
-//            this.truckViews.get(i).setTruck(course.getTrucks().get(i));
-            this.truckViews.add(new TruckView(course.getTrucks().get(i)));
+            TruckView tv = new TruckView(course.getTrucks().get(i));
+            tv.setTruckColor(Settings.getPalette().get(i % Settings.getPalette().size()));
+            this.truckViews.add(tv);
         }
 
         this.revalidate();

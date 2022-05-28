@@ -105,4 +105,12 @@ public class TruckView extends Canvas {
     public int hashCode() {
         return Objects.hash(truck);
     }
+
+    public Color getTruckColor() {
+        return truckColor;
+    }
+
+    public void setTruckColor(Color truckColor) {
+        this.truckColor = truckColor;
+    }
 }
