@@ -174,20 +174,31 @@ public class Course {
         trucks.add(this.trucks.get(rand.nextInt(this.trucks.size())));
         trucks.add(this.trucks.get(rand.nextInt(this.trucks.size())));
 
-        List<Integer> numberOfClients = new ArrayList<>();
-        numberOfClients.add(rand.nextInt(1,trucks.get(0).getClients().size() - 1));
-        numberOfClients.add(rand.nextInt(1,trucks.get(1).getClients().size() - 1));
+        while(trucks.get(0) == trucks.get(1))
+        {
+            trucks.set(1, this.trucks.get(rand.nextInt(this.trucks.size())));
+        }
+
+        List<Integer> endIndex = new ArrayList<>();
+        endIndex.add(rand.nextInt(1,trucks.get(0).getClients().size() - 1));
+        endIndex.add(rand.nextInt(1,trucks.get(1).getClients().size() - 1));
 
         List<Integer> startIndex = new ArrayList<>();
         startIndex.add(rand.nextInt(1,trucks.get(0).getClients().size() - 1));
         startIndex.add(rand.nextInt(1,trucks.get(1).getClients().size() - 1));
+
+        while(startIndex.get(0) > endIndex.get(0) || startIndex.get(1) > endIndex.get(1))
+        {
+            endIndex.set(0, rand.nextInt(1,trucks.get(0).getClients().size() - 1));
+            endIndex.set(1, rand.nextInt(1,trucks.get(1).getClients().size() - 1));
+        }
 
         List<Client> clients1 = new ArrayList<>();
         List<Client> clients2 = new ArrayList<>();
         int capacite1 = 0, capacite2 = 0;
 
         for (int i = 0; i < 2; i++) {
-            for (int k = startIndex.get(i); k < numberOfClients.get(i); k++) {
+            for (int k = startIndex.get(i); k <= endIndex.get(i); k++) {
                 if (i == 0) {
                     clients1.add(trucks.get(i).clients.get(k));
                     capacite1 += trucks.get(i).clients.get(k).getQuantite();
@@ -196,19 +207,31 @@ public class Course {
                     capacite2 += trucks.get(i).clients.get(k).getQuantite();
                 }
             }
-
-            if (trucks.get(0).getQuantite() + capacite1 < trucks.get(0).getMaxCapacity() && trucks.get(1).getQuantite() + capacite2 < trucks.get(1).getMaxCapacity()) {
-                trucks.get(0).clients.removeAll(clients1);
-                trucks.get(0).clients.addAll(clients1);
-
-                trucks.get(1).clients.removeAll(clients2);
-                trucks.get(1).clients.addAll(clients2);
-            }
         }
 
-        for (Truck test:
-                trucks) {
-            System.out.println(test);
+        if (trucks.get(0).getQuantite() - capacite1 + capacite2 < trucks.get(0).getMaxCapacity() && trucks.get(1).getQuantite() - capacite2 + capacite1 < trucks.get(1).getMaxCapacity()) {
+            System.out.println("Avant : ");
+            for (int i = 0; i < 2; i++)
+            {
+                System.out.println("Numéro de camion :" +trucks.get(i).truckNum + "liste clients : " + trucks.get(i).clients);
+            }
+            Client c1 = trucks.get(0).clients.get(trucks.get(0).clients.size()-1);
+            trucks.get(0).clients.removeAll(clients1);
+            trucks.get(0).clients.remove(trucks.get(0).clients.size()-1);
+            trucks.get(0).clients.addAll(clients2);
+            trucks.get(0).clients.add(c1);
+
+            Client c2 = trucks.get(1).clients.get(trucks.get(1).clients.size()-1);
+            trucks.get(1).clients.removeAll(clients2);
+            trucks.get(1).clients.remove(trucks.get(1).clients.size()-1);
+            trucks.get(1).clients.addAll(clients1);
+            trucks.get(1).clients.add(c2);
+
+            System.out.println("Après : ");
+            for (int j = 0; j < 2; j++)
+            {
+                System.out.println("Numéro de camion :" +trucks.get(j).truckNum + "liste clients : " + trucks.get(j).clients);
+            }
         }
     }
 
