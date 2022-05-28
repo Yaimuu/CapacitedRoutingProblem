@@ -11,11 +11,14 @@ public class RecuitSimule extends MetaHeuristic{
 
     public float run(Course x0, float t0) {
         int i = 0;
-        float xMin = this.solution.computeFitness();
-        Course minSolution;
+        float fMin = x0.computeFitness();
+        Course xMin = x0;
         for(int k=0; k < t0; k++)
         {
-//            for (int l=1; l < )
+            for (int l=1; l < k; l++)
+            {
+
+            }
         }
 
 
