@@ -127,41 +127,46 @@ public class Neighborhood {
      */
     public float mergeTrucksBest()
     {
+        float initialFitness = 0;
         float resultFitness = 0;
-        Truck bestTruck1;
-        Truck bestTruck2;
+        Truck bestTruck1 = null;
+        Truck bestTruck2 = null;
         for(Truck truck1 : this.getTrucks())
         {
             for(Truck truck2 : this.getTrucks())
             {
                 float currentFitness = truck2.computeFitness();
+                initialFitness = currentFitness;
                 float neighborFitness = 0;
                 if (truck1 == truck2)
                     continue;
                 else
                 {
-                    System.out.println("Résultat avant changement : " + resultFitness);
                     if(truck1.getQuantite() + truck2.getQuantite() <= truck2.getMaxCapacity())
                     {
+                        System.out.println("Résultat avant changement : " + currentFitness);
                         truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 2));
                         neighborFitness = truck2.computeFitness();
                         float newFitness = currentFitness - neighborFitness;
-                        truck2.getClients().removeAll(truck1.getClients().subList(1, truck1.getClients().size() - 2));
                         if (resultFitness < newFitness)
                         {
                             resultFitness = newFitness;
                             bestTruck1 = truck1;
                             bestTruck2 = truck2;
                         }
+                        else
+                            truck2.getClients().removeAll(truck1.getClients().subList(1, truck1.getClients().size() - 2));
                         System.out.println("Résultat après changement : " + resultFitness);
                     }
                 }
             }
         }
+        if (resultFitness < initialFitness)
+        {
+            this.getTrucks().remove(bestTruck1);
+        }
         return resultFitness;
     }
-
-
 
     /***
      * Echange de morceau de tournée entre 2 camions

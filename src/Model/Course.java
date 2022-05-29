@@ -96,8 +96,8 @@ public class Course implements Cloneable{
 
     public void nextStep()
     {
-//        Neighborhood test = new Neighborhood(this);
-//         test.mergeTrucksBest();
+        Neighborhood test = new Neighborhood(this);
+        test.mergeTrucksBest();
 //        mergeTrucks();
 //        switchClientsFromTwoTrucks();
 //        this.trucks.get(0).twoOpts();
@@ -107,8 +107,8 @@ public class Course implements Cloneable{
 //        exchangePartsOfTrucks();
         RecuitSimule recuit = new RecuitSimule(this);
         try {
-            Course test = recuit.run(100);
-            System.out.println(test.computeFitness());
+            Course test2 = recuit.run(100);
+            System.out.println(test2.computeFitness());
         }
         catch (Exception e)
         {
