@@ -90,7 +90,7 @@ public class Course {
     public void nextStep()
     {
         Neighborhood test = new Neighborhood(this);
-        test.exchangePartsOfTrucks();
+         test.mergeTrucksBest();
 //        mergeTrucks();
 //        switchClientsFromTwoTrucks();
 //        this.trucks.get(0).twoOpts();
