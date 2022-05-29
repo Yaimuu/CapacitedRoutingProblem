@@ -45,8 +45,10 @@ public class Truck {
 //            fitness += distance;
 //        }
 
-        return fitness;
+        return this.fitness;
     }
+
+
 
     public float computeFitness()
     {
@@ -63,10 +65,10 @@ public class Truck {
 
     public float computeFitness(Client start, Client end)
     {
-        float localFitness = 0;
+        float localFitness;
         int i1 = this.clients.indexOf(start), i2 = this.clients.indexOf(end);
 
-        computeFitness(i1, i2);
+        localFitness = computeFitness(i1, i2);
 
         return localFitness;
     }
@@ -75,6 +77,11 @@ public class Truck {
     {
         float localFitness = 0;
 
+        if(Math.abs(start-end) == 1 && end != this.clients.size())
+        {
+            Client c1 = this.clients.get(start), c2 = this.clients.get(end);
+            return c1.getDistance(c2);
+        }
         for (int i = start; i < end-1; i++) {
             Client c1 = this.clients.get(i), c2 = this.clients.get(i+1);
             float distance = c1.getDistance(c2);
@@ -140,11 +147,11 @@ public class Truck {
     public boolean addClient(Client client) {
         if(this.quantite + client.getQuantite() <= this.maxCapacity)
         {
-            int id = this.clients.size()!=0 && client.getNumClient() != 0?this.clients.size()-1:0;
+            int id = this.clients.size() != 0 && client.getNumClient() != 0 ? this.clients.size()-1 : 0;
             this.clients.add(id, client);
             this.quantite += client.getQuantite();
 
-            this.fitness += computeFitness(id, clients.size());
+            this.fitness += computeFitness(id, id+1);
             return true;
         }
         return false;
@@ -152,9 +159,11 @@ public class Truck {
 
     public void addClients(List<Client> clients)
     {
-        int id = this.clients.size()-1;
-        this.fitness += computeFitness(id, clients.size());
+        int id = this.clients.size() - 1;
+
         this.clients.addAll(id, clients);
+
+        this.fitness += computeFitness(id, clients.size());
     }
 
     public void removeClient(Client client) {
@@ -212,6 +221,11 @@ public class Truck {
         this.clients.set(index, c);
     }
 
+    public void updateFitness()
+    {
+        this.fitness = computeFitness();
+    }
+
     public int getMaxCapacity() {
         return maxCapacity;
     }
@@ -223,6 +237,7 @@ public class Truck {
                 ", clients=" + clients +
                 ", truckNum=" + truckNum +
                 ", quantite=" + quantite +
+                ", fitness=" + fitness +
                 '}';
     }
 }
