@@ -14,11 +14,11 @@ import java.util.Random;
 enum NeighborhoodType {
     INVERT_CLIENTS_2TRUCKS("switchClientsFromTwoTrucks"),
     MOVE_CLIENT("addClientToOtherTruck"),
-//    MERGE_CLIENTS("mergeTrucks"),
-//    EXCHANGE_PART_TRUCKS("exchangePartsOfTrucks"),
+    MERGE_CLIENTS("mergeTrucks"),
+    //EXCHANGE_PART_TRUCKS("exchangePartsOfTrucks"),
     INVERT_CLIENTS_1TRUCK("exchangeClients"),
     TWO_OPTS("twoOpts"),
-//    RELOCATE("relocate")
+    RELOCATE("relocate")
     ;
 
     private final String text;
@@ -109,17 +109,14 @@ public class Neighborhood {
         Random rand = new Random();
         Truck truck1 = this.getTrucks().get(rand.nextInt(this.getTrucks().size()));
         Truck truck2 = this.getTrucks().get(rand.nextInt(this.getTrucks().size()));
-
-        System.out.println(truck1.toString());
-        System.out.println(truck2.toString());
-
         if(truck1.getQuantite() + truck2.getQuantite() <= truck2.getMaxCapacity())
         {
-            truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 2));
+            System.out.println(truck1.toString());
+            System.out.println(truck2.toString());
+            truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 1));
             this.getTrucks().remove(truck1);
+            System.out.println(truck2.toString());
         }
-
-        System.out.println(truck2.toString());
     }
 
     /**
@@ -287,15 +284,22 @@ public class Neighborhood {
 
     public void relocate(Truck truck) {
         Client client = truck.getRandomClient();
+        //System.out.println(truck.getClients());
         int indexCli = truck.getClients().indexOf(client);
         int indexNext = indexCli;
         while(indexNext == indexCli) {
-            Client client2 = truck.getRandomClient();
-            indexNext = truck.getClients().indexOf(client2);
+            if (truck.getClients().size() == 3)
+                break;
+            else
+            {
+                Client client2 = truck.getRandomClient();
+                indexNext = truck.getClients().indexOf(client2);
+            }
         }
 
         truck.getClients().remove(client);
         truck.getClients().add(indexNext, client);
+        //System.out.println(truck.getClients());
     }
 
     public List<Truck> getTrucks()
