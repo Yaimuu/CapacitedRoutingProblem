@@ -2,12 +2,9 @@ package Model;
 
 import java.util.Arrays;
 
-public class Client {
+public class Client implements Cloneable {
 
     private float[] position;
-
-    Client next;
-    Client previous;
 
     int numClient, quantite;
 
@@ -16,6 +13,12 @@ public class Client {
         this.numClient = numClient;
         this.quantite = quantite;
         this.position = position;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        return super.clone();
     }
 
     public int getDistance(Client client)
@@ -29,22 +32,6 @@ public class Client {
 
     public void setPosition(float[] position) {
         this.position = position;
-    }
-
-    public Client getNext() {
-        return next;
-    }
-
-    public void setNext(Client next) {
-        this.next = next;
-    }
-
-    public Client getPrevious() {
-        return previous;
-    }
-
-    public void setPrevious(Client previous) {
-        this.previous = previous;
     }
 
     public int getNumClient() {
@@ -67,8 +54,6 @@ public class Client {
     public String toString() {
         return "Client{" +
                 "position=" + Arrays.toString(position) +
-//                ", next=" + next == null ? null : next.numClient +
-//                ", previous=" + previous == null ? null : previous.numClient +
                 ", numClient=" + numClient +
                 ", quantité=" + quantite +
                 '}';

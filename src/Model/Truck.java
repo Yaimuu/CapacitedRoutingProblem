@@ -7,13 +7,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Truck {
+public class Truck implements Cloneable {
 
     final int maxCapacity = 100;
 
-    List<Client> clients;
-    List<Client[]> roads;
-    List<Double> distances;
+    private List<Client> clients;
+    private List<Double> distances;
 
     int truckNum, quantite;
 
@@ -34,6 +33,18 @@ public class Truck {
         this.clients = clients;
 
         this.fitness = computeFitness();
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        Truck clone = (Truck) super.clone();
+        List<Client> cloneClients = new ArrayList<>();
+        for (Client c : this.clients) {
+            cloneClients.add( (Client) c.clone() );
+        }
+        clone.setClients(cloneClients);
+        return clone;
     }
 
     public float getTruckFitness() {
@@ -229,6 +240,10 @@ public class Truck {
 
     public int getMaxCapacity() {
         return maxCapacity;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
 
     @Override

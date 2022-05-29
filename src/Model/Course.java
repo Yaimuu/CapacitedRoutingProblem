@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Course implements Cloneable{
+public class Course implements Cloneable {
 
     private static Course instance;
 
@@ -28,7 +28,13 @@ public class Course implements Cloneable{
     @Override
     public Object clone() throws CloneNotSupportedException
     {
-        return super.clone();
+        Course clone = (Course) super.clone();
+        List<Truck> cloneTrucks = new ArrayList<>();
+        for (Truck t : this.trucks) {
+            cloneTrucks.add( (Truck) t.clone() );
+        }
+        clone.setTrucks(cloneTrucks);
+        return clone;
     }
 
     public static Course getInstance()
@@ -108,6 +114,7 @@ public class Course implements Cloneable{
         RecuitSimule recuit = new RecuitSimule(this);
         try {
             Course test2 = recuit.run(100);
+            this.trucks = ((Course) test2.clone()).getTrucks();
             System.out.println(test2.computeFitness());
         }
         catch (Exception e)

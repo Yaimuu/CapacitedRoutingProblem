@@ -32,7 +32,7 @@ public class RecuitSimule extends MetaHeuristic{
                 {
                     n = new Neighborhood(xi);
                     n.useMethod();
-                    System.out.println("Nouvelle fitness : " + n.getFitness() + "Ancienne fitness :" + xi.computeFitness());
+                    System.out.println("Nouvelle fitness : " + n.getFitness() + " - Ancienne fitness :" + xi.computeFitness());
                     float deltaFitness = n.getFitness() - xi.computeFitness();
                     if(deltaFitness < 0)
                     {
