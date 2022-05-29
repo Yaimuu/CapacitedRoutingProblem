@@ -44,7 +44,7 @@ public class Truck {
 //            float distance = c1.getDistance(c2);
 //            fitness += distance;
 //        }
-
+        this.fitness = computeFitness();
         return this.fitness;
     }
 
@@ -151,7 +151,7 @@ public class Truck {
             this.clients.add(id, client);
             this.quantite += client.getQuantite();
 
-            this.fitness += computeFitness(id, id+1);
+//            this.fitness += computeFitness(id, id+1);
             return true;
         }
         return false;
@@ -163,13 +163,13 @@ public class Truck {
 
         this.clients.addAll(id, clients);
 
-        this.fitness += computeFitness(id, clients.size());
+//        this.fitness += computeFitness(id, clients.size());
     }
 
     public void removeClient(Client client) {
         if(this.clients.contains(client))
         {
-            this.fitness -= computeFitness(client, this.clients.get(this.clients.size()));
+//            this.fitness -= computeFitness(client, this.clients.get(this.clients.size()));
             this.quantite -= client.getQuantite();
             this.clients.remove(client);
         }

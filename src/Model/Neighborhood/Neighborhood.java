@@ -307,4 +307,14 @@ public class Neighborhood {
     public NeighborhoodType getCurrentMethod() {
         return currentMethod;
     }
+
+    public float getFitness()
+    {
+        return this.course.computeFitness();
+    }
+
+    public Course getSolution()
+    {
+        return this.course;
+    }
 }

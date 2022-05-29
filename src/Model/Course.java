@@ -1,6 +1,7 @@
 package Model;
 
 import Model.MetaHeuristcs.MetaHeuristic;
+import Model.MetaHeuristcs.RecuitSimule;
 import Model.Neighborhood.Neighborhood;
 import View.CourseView;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Course {
+public class Course implements Cloneable{
 
     private static Course instance;
 
@@ -22,6 +23,12 @@ public class Course {
         this.trucks = new ArrayList<>();
 
         Settings.generateRandomPalette(100);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        return (Course)super.clone();
     }
 
     public static Course getInstance()
@@ -89,8 +96,8 @@ public class Course {
 
     public void nextStep()
     {
-        Neighborhood test = new Neighborhood(this);
-         test.mergeTrucksBest();
+//        Neighborhood test = new Neighborhood(this);
+//         test.mergeTrucksBest();
 //        mergeTrucks();
 //        switchClientsFromTwoTrucks();
 //        this.trucks.get(0).twoOpts();
@@ -98,6 +105,15 @@ public class Course {
 //        this.trucks.get(0).relocate();
 //        this.generateCourse();
 //        exchangePartsOfTrucks();
+        RecuitSimule recuit = new RecuitSimule(this);
+        try {
+            Course test = recuit.run(100);
+            System.out.println(test.computeFitness());
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
         this.updateView();
     }
 

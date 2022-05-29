@@ -4,9 +4,9 @@ import Model.Course;
 
 public abstract class MetaHeuristic {
 
-    Course solution;
+    protected Course solution;
 
-    MetaHeuristic(Course course) {
+    public MetaHeuristic(Course course) {
         this.solution = course;
     }
 
