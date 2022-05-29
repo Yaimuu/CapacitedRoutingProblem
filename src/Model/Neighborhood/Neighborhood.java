@@ -15,7 +15,7 @@ enum NeighborhoodType {
     INVERT_CLIENTS_2TRUCKS("switchClientsFromTwoTrucks"),
     MOVE_CLIENT("addClientToOtherTruck"),
     MERGE_CLIENTS("mergeTrucks"),
-    //EXCHANGE_PART_TRUCKS("exchangePartsOfTrucks"),
+    EXCHANGE_PART_TRUCKS("exchangePartsOfTrucks"),
     INVERT_CLIENTS_1TRUCK("exchangeClients"),
     TWO_OPTS("twoOpts"),
     RELOCATE("relocate")
@@ -107,15 +107,18 @@ public class Neighborhood {
     public void mergeTrucks()
     {
         Random rand = new Random();
-        Truck truck1 = this.getTrucks().get(rand.nextInt(this.getTrucks().size()));
-        Truck truck2 = this.getTrucks().get(rand.nextInt(this.getTrucks().size()));
+        List<Truck> trucks = this.course.getRandomTrucks(2,0, this.getTrucks().size());
+        Truck truck1 = trucks.get(0);
+        Truck truck2 = trucks.get(1);
         if(truck1.getQuantite() + truck2.getQuantite() <= truck2.getMaxCapacity())
         {
-            System.out.println(truck1.toString());
-            System.out.println(truck2.toString());
+            System.out.println(truck1);
+            System.out.println(truck2);
+
             truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 1));
             this.getTrucks().remove(truck1);
-            System.out.println(truck2.toString());
+
+            System.out.println(truck2);
         }
     }
 

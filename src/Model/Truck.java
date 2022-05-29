@@ -160,8 +160,11 @@ public class Truck {
         int id = this.clients.size() - 1;
 
         this.clients.addAll(id, clients);
+        for (Client c : clients) {
+            this.quantite += c.getQuantite();
+        }
 
-//        this.fitness += computeFitness(id, clients.size());
+        this.fitness += computeFitness(id, clients.size());
     }
 
     public void removeClient(Client client) {

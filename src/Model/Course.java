@@ -71,7 +71,7 @@ public class Course implements Cloneable{
             }
             savedClients.add(clientId);
             Client client = clients.get(clientId);
-            if( newTruck.getQuantite() > newTruck.getMaxCapacity()/2 )
+            if( newTruck.getQuantite() > newTruck.getMaxCapacity()/4 )
             {
                 idTruck++;
                 newTruck.addClient(clients.get(0));
@@ -97,9 +97,9 @@ public class Course implements Cloneable{
     public void nextStep()
     {
         Neighborhood test = new Neighborhood(this);
-        //test.relocate();
-//        mergeTrucks();
-//        switchClientsFromTwoTrucks();
+//        test.relocate();
+//        test.mergeTrucks();
+//        test.switchClientsFromTwoTrucks();
 //        this.trucks.get(0).twoOpts();
 //        addClientToOtherTruck();
 //        this.trucks.get(0).relocate();
@@ -154,6 +154,33 @@ public class Course implements Cloneable{
 
     public void setTrucks(List<Truck> trucks) {
         this.trucks = trucks;
+    }
+
+    public Truck getRandomTruck() {
+        Random rand  = new Random();
+        return this.trucks.get(rand.nextInt(1, this.trucks.size() - 1));
+    }
+
+    public Truck getRandomTruck(int min, int range) {
+        Random rand  = new Random();
+        return this.trucks.get(rand.nextInt(min, min + range));
+    }
+
+    public List<Truck> getRandomTrucks(int nb, int min, int range) {
+        List<Truck> trucks = new ArrayList<>();
+        for (int i = 0; i < nb; i++) {
+            Truck t = this.getRandomTruck(min, range);
+
+            if(nb < this.trucks.size())
+            {
+                while(trucks.contains(t)) {
+                    t = this.getRandomTruck(min, range);
+                }
+            }
+
+            trucks.add(t);
+        }
+        return trucks;
     }
 
     public CourseView getCourseView() {
