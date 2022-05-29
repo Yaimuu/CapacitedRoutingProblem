@@ -48,8 +48,6 @@ public class Truck {
         return this.fitness;
     }
 
-
-
     public float computeFitness()
     {
         float localFitness = 0;
