@@ -113,8 +113,9 @@ public class Course implements Cloneable {
 //        exchangePartsOfTrucks();
         RecuitSimule recuit = new RecuitSimule(this);
         try {
-            Course test2 = recuit.run(100000);
-            this.trucks = ((Course) test2.clone()).getTrucks();
+            Course test2 = recuit.run(100);
+            this.courseView.setCourseUsed((Course) test2.clone());
+//            this.trucks = ((Course) test2.clone()).getTrucks();
             System.out.println(test2.computeFitness());
         }
         catch (Exception e)
@@ -147,7 +148,7 @@ public class Course implements Cloneable {
 
     public void updateView()
     {
-        this.courseView.updateTrucks();
+        this.courseView.updateView();
     }
 
     public void addTruck(Truck truck)

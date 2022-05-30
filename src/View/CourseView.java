@@ -12,6 +12,8 @@ import java.util.List;
 
 public class CourseView extends View {
 
+    private Course courseUsed;
+
     private List<TruckView> truckViews;
     private List<ClientView> clientViews;
 
@@ -19,7 +21,9 @@ public class CourseView extends View {
     {
         this.truckViews = new ArrayList<>();
         this.clientViews = new ArrayList<>();
-        Course course = Course.getInstance();
+        try {
+            this.courseUsed = (Course) Course.getInstance().clone();
+        }catch (Exception e) {}
 
         updateTrucks();
 
@@ -27,7 +31,7 @@ public class CourseView extends View {
             this.clientViews.add(new ClientView(c));
         }
 
-        System.out.println(course.computeFitness());
+        System.out.println(this.courseUsed.computeFitness());
     }
 
     @Override
@@ -50,14 +54,20 @@ public class CourseView extends View {
     public void updateTrucks()
     {
         this.truckViews.clear();
-        Course course = Course.getInstance();
-        System.out.println(course.computeFitness());
+//        Course course = Course.getInstance();
+        System.out.println(this.courseUsed.computeFitness());
 
-        for (int i = 0; i < course.getTrucks().size(); i++) {
-            TruckView tv = new TruckView(course.getTrucks().get(i));
+        for (int i = 0; i < this.courseUsed.getTrucks().size(); i++) {
+            TruckView tv = new TruckView(this.courseUsed.getTrucks().get(i));
             tv.setTruckColor(Settings.getPalette().get(i % Settings.getPalette().size()));
             this.truckViews.add(tv);
         }
+
+//        this.updateView();
+    }
+
+    public void updateView() {
+        updateTrucks();
 
         this.revalidate();
         this.repaint();
@@ -69,5 +79,13 @@ public class CourseView extends View {
 
     public void setTruckViews(List<TruckView> truckViews) {
         this.truckViews = truckViews;
+    }
+
+    public Course getCourseUsed() {
+        return courseUsed;
+    }
+
+    public void setCourseUsed(Course courseUsed) {
+        this.courseUsed = courseUsed;
     }
 }
