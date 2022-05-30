@@ -30,20 +30,27 @@ public class MainView extends JFrame {
         JPanel mainPanel = new JPanel();
 
 //        BoxLayout boxLayout = new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS);
-        GridLayout gridLayout = new GridLayout(2, 1);
+        GridLayout gridLayout = new GridLayout();
+        JSplitPane splitPane = new JSplitPane();
 
         this.courseView = new CourseView(clients);
         this.settingsView = new SettingsView();
 
-        this.courseView.setBorder(BorderFactory.createEtchedBorder());
-        this.settingsView.setBorder(BorderFactory.createEtchedBorder());
+//        this.courseView.setBorder(BorderFactory.createEtchedBorder());
+//        this.settingsView.setBorder(BorderFactory.createEtchedBorder());
+        splitPane.setSize(1920,1080);
+        splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        splitPane.setDividerLocation(500);
+        splitPane.setTopComponent(this.courseView);
+        splitPane.setBottomComponent(this.settingsView);
 
         mainPanel.setSize(550,700);
         mainPanel.setLayout(gridLayout);
 
         Course.getInstance().setCourseView(this.courseView);
-        mainPanel.add(this.courseView);
-        mainPanel.add(this.settingsView);
+        mainPanel.add(splitPane);
+//        mainPanel.add(this.courseView);
+//        mainPanel.add(this.settingsView);
 
         this.setContentPane(mainPanel);
 

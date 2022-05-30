@@ -50,8 +50,12 @@ public class Neighborhood {
 
     public Neighborhood(Course course) {
         this();
+        try {
+            this.course = (Course) course.clone();
+        } catch (Exception e) {
 
-        this.course = course;
+        }
+
     }
 
     public void setRandomMethod() {

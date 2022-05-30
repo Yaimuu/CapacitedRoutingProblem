@@ -113,7 +113,7 @@ public class Course implements Cloneable {
 //        exchangePartsOfTrucks();
         RecuitSimule recuit = new RecuitSimule(this);
         try {
-            Course test2 = recuit.run(100);
+            Course test2 = recuit.run(100000);
             this.trucks = ((Course) test2.clone()).getTrucks();
             System.out.println(test2.computeFitness());
         }
