@@ -8,7 +8,7 @@ import java.util.Random;
 public class Settings {
 
     public final static int scale = 5;
-    public final static boolean DEBUG = false;
+    public final static boolean DEBUG = true;
 
     private static List<Color> paletteTruck;
 

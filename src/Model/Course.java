@@ -107,21 +107,24 @@ public class Course implements Cloneable {
 //        test.mergeTrucks();
 //        test.switchClientsFromTwoTrucks();
 //        test.twoOpts();
+//        test.addClientToOtherTruck();
+        test.mergeTrucks();
+//        test.exchangePartsOfTrucks();
 //        addClientToOtherTruck();
-//        this.trucks.get(0).relocate();
+
 //        this.generateCourse();
-//        exchangePartsOfTrucks();
 
         RecuitSimule recuit = new RecuitSimule(this);
         try {
-            Course test2 = recuit.run(250);
-            this.courseView.setCourseUsed((Course) test2.clone());
-            System.out.println(test2);
-            System.out.println(test2.computeFitness());
+//            Course test2 = recuit.run(250);
+//            this.courseView.setCourseUsed((Course) test2.clone());
+//            System.out.println(test2);
+//            System.out.println(test2.computeFitness());
 
 //            this.trucks = ((Course) test2.clone()).getTrucks();
 
-//            this.courseView.setCourseUsed((Course) test.getSolution().clone());
+            this.courseView.setCourseUsed((Course) test.getSolution().clone());
+            System.out.println(test.getSolution());
         }
         catch (Exception e)
         {

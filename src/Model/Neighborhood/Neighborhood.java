@@ -14,8 +14,8 @@ import java.util.Random;
 
 enum NeighborhoodType {
     INVERT_CLIENTS_2TRUCKS("switchClientsFromTwoTrucks"),
-    MOVE_CLIENT("addClientToOtherTruck"),
-    MERGE_CLIENTS("mergeTrucks"),
+//    MOVE_CLIENT("addClientToOtherTruck"),
+//    MERGE_CLIENTS("mergeTrucks"),
     EXCHANGE_PART_TRUCKS("exchangePartsOfTrucks"),
     INVERT_CLIENTS_1TRUCK("exchangeClients"),
     TWO_OPTS("twoOpts"),
@@ -126,9 +126,8 @@ public class Neighborhood {
                 System.out.println(truck2);
             }
 
-
-            truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 1));
-            this.getTrucks().remove(truck1);
+            if(truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 1)))
+                this.getTrucks().remove(truck1);
 
             if(Settings.DEBUG)
                 System.out.println(truck2);
@@ -169,7 +168,7 @@ public class Neighborhood {
                             bestTruck2 = truck2;
                         }
                         else
-                            truck2.getClients().removeAll(truck1.getClients().subList(1, truck1.getClients().size() - 2));
+                            truck2.removeClients(truck1.getClients().subList(1, truck1.getClients().size() - 2));
                         if(Settings.DEBUG)
                             System.out.println("Résultat après changement : " + resultFitness);
                     }
@@ -238,16 +237,16 @@ public class Neighborhood {
             }
 
             Client c1 = trucks.get(0).getClients().get(trucks.get(0).getClients().size()-1);
-            trucks.get(0).getClients().removeAll(clients1);
-            trucks.get(0).getClients().remove(trucks.get(0).getClients().size()-1);
-            trucks.get(0).getClients().addAll(clients2);
-            trucks.get(0).getClients().add(c1);
+            trucks.get(0).removeClients(clients1);
+            trucks.get(0).removeClient(trucks.get(0).getClients().size()-1);
+            trucks.get(0).addClients(clients2);
+            trucks.get(0).addClient(c1);
 
             Client c2 = trucks.get(1).getClients().get(trucks.get(1).getClients().size()-1);
-            trucks.get(1).getClients().removeAll(clients2);
-            trucks.get(1).getClients().remove(trucks.get(1).getClients().size()-1);
-            trucks.get(1).getClients().addAll(clients1);
-            trucks.get(1).getClients().add(c2);
+            trucks.get(1).removeClients(clients2);
+            trucks.get(1).removeClient(trucks.get(1).getClients().size()-1);
+            trucks.get(1).addClients(clients1);
+            trucks.get(1).addClient(c2);
 
             if(Settings.DEBUG)
             {

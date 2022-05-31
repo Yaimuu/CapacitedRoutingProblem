@@ -181,7 +181,7 @@ public class Truck implements Cloneable {
         return false;
     }
 
-    public void addClients(List<Client> clients)
+    public boolean addClients(List<Client> clients)
     {
         int id = this.clients.size() - 1;
 
@@ -196,7 +196,14 @@ public class Truck implements Cloneable {
             this.quantite += quantityToAdd;
 //        this.fitness += computeFitness(id, clients.size());
             this.fitness = computeFitness();
+            return true;
         }
+        return false;
+    }
+
+    public void removeClient(int index)
+    {
+        removeClient(this.clients.get(index));
     }
 
     public void removeClient(Client client) {
@@ -207,6 +214,21 @@ public class Truck implements Cloneable {
             this.quantite -= client.getQuantite();
             this.clients.remove(client);
         }
+    }
+
+    public void removeClients(List<Client> clients)
+    {
+        if(Collections.indexOfSubList(this.clients , clients) != -1)
+        {
+            this.clients.removeAll(clients);
+            for (Client c : clients) {
+                this.quantite -= c.getQuantite();
+            }
+
+//        this.fitness -= computeFitness(id, clients.size());
+            this.fitness = computeFitness();
+        }
+
     }
 
     /**
