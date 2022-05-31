@@ -257,7 +257,6 @@ public class Neighborhood {
                     System.out.println("Numéro de camion : " +trucks.get(j).getTruckNum() + " - liste clients : " + trucks.get(j).getClients());
                 }
             }
-
         }
     }
 
@@ -336,6 +335,7 @@ public class Neighborhood {
         }
 
         truck.getClients().remove(client);
+//        truck.addClient(indexNext, client);
         truck.getClients().add(indexNext, client);
 
         if(Settings.DEBUG)

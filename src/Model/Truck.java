@@ -166,13 +166,16 @@ public class Truck implements Cloneable {
     }
 
     public boolean addClient(Client client) {
+        int id = this.clients.size() != 0 && client.getNumClient() != 0 ? this.clients.size()-1 : 0;
+        return addClient(id, client);
+    }
+
+    public boolean addClient(int id, Client client) {
         if(this.quantite + client.getQuantite() <= this.maxCapacity)
         {
-            int id = this.clients.size() != 0 && client.getNumClient() != 0 ? this.clients.size()-1 : 0;
             this.clients.add(id, client);
             this.quantite += client.getQuantite();
             this.fitness = computeFitness();
-//            this.fitness += computeFitness(id, id+1);
             return true;
         }
         return false;
@@ -182,13 +185,18 @@ public class Truck implements Cloneable {
     {
         int id = this.clients.size() - 1;
 
-        this.clients.addAll(id, clients);
+        int quantityToAdd = 0;
         for (Client c : clients) {
-            this.quantite += c.getQuantite();
+            quantityToAdd += c.getQuantite();
         }
 
+        if(this.quantite + quantityToAdd <= this.maxCapacity)
+        {
+            this.clients.addAll(id, clients);
+            this.quantite += quantityToAdd;
 //        this.fitness += computeFitness(id, clients.size());
-        this.fitness = computeFitness();
+            this.fitness = computeFitness();
+        }
     }
 
     public void removeClient(Client client) {
@@ -209,8 +217,11 @@ public class Truck implements Cloneable {
     public void switchClient(Client c1, Client c2)
     {
         int id1 = this.clients.indexOf(c1), id2 = this.clients.indexOf(c2);
-        this.clients.set(id1, c2);
-        this.clients.set(id2, c1);
+        this.removeClient(c1);
+        this.addClient(id1, c2);
+
+        this.removeClient(c2);
+        this.addClient(id2, c1);
     }
 
     public List<Double> getDistances() {
