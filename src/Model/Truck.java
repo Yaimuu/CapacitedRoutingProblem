@@ -174,14 +174,15 @@ public class Truck implements Cloneable {
         if(this.quantite + client.getQuantite() <= this.maxCapacity)
         {
             this.clients.add(id, client);
-            this.quantite += client.getQuantite();
+//            this.quantite += client.getQuantite();
+            this.quantite = this.computeQuantite();
             this.fitness = computeFitness();
             return true;
         }
         return false;
     }
 
-    public void addClients(List<Client> clients)
+    public boolean addClients(List<Client> clients)
     {
         int id = this.clients.size() - 1;
 
@@ -193,10 +194,18 @@ public class Truck implements Cloneable {
         if(this.quantite + quantityToAdd <= this.maxCapacity)
         {
             this.clients.addAll(id, clients);
-            this.quantite += quantityToAdd;
+//            this.quantite += quantityToAdd;
+            this.quantite = this.computeQuantite();
 //        this.fitness += computeFitness(id, clients.size());
             this.fitness = computeFitness();
+            return true;
         }
+        return false;
+    }
+
+    public void removeClient(int index)
+    {
+        removeClient(this.clients.get(index));
     }
 
     public void removeClient(Client client) {
@@ -204,9 +213,26 @@ public class Truck implements Cloneable {
         {
 //            this.fitness -= computeFitness(client, this.clients.get(this.clients.size()));
             this.fitness = computeFitness();
-            this.quantite -= client.getQuantite();
+            this.quantite = this.computeQuantite();
+//            this.quantite -= client.getQuantite();
             this.clients.remove(client);
         }
+    }
+
+    public void removeClients(List<Client> clients)
+    {
+        if(Collections.indexOfSubList(this.clients , clients) != -1)
+        {
+            this.clients.removeAll(clients);
+            this.quantite = this.computeQuantite();
+//            for (Client c : clients) {
+//                this.quantite -= c.getQuantite();
+//            }
+
+//        this.fitness -= computeFitness(id, clients.size());
+            this.fitness = computeFitness();
+        }
+
     }
 
     /**

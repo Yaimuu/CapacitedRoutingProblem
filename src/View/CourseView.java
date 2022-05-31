@@ -39,7 +39,7 @@ public class CourseView extends View {
     {
         super.paintComponent(g);
         for (TruckView truck:
-             this.truckViews) {
+                this.truckViews) {
             truck.paint(g);
         }
 

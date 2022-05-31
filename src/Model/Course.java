@@ -93,7 +93,7 @@ public class Course implements Cloneable {
         System.out.println("Nb trucks : " + this.trucks.size());
 
         for (Truck t:
-             this.trucks) {
+                this.trucks) {
             System.out.println(t);
         }
 
@@ -104,13 +104,14 @@ public class Course implements Cloneable {
     {
         Neighborhood test = new Neighborhood(this);
 //        test.relocate();
-//        test.mergeTrucks();
 //        test.switchClientsFromTwoTrucks();
 //        test.twoOpts();
-//        addClientToOtherTruck();
-//        this.trucks.get(0).relocate();
+
+//        test.addClientToOtherTruck();
+//        test.mergeTrucks();
+//        test.exchangePartsOfTrucks();
+
 //        this.generateCourse();
-//        exchangePartsOfTrucks();
 
         RecuitSimule recuit = new RecuitSimule(this);
         try {
@@ -119,9 +120,10 @@ public class Course implements Cloneable {
             System.out.println(test2);
             System.out.println(test2.computeFitness());
 
-//            this.trucks = ((Course) test2.clone()).getTrucks();
-
+//            this.trucks = ((Course) test.getSolution().clone()).getTrucks();
+//
 //            this.courseView.setCourseUsed((Course) test.getSolution().clone());
+//            System.out.println(test.getSolution());
         }
         catch (Exception e)
         {

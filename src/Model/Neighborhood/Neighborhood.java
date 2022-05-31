@@ -17,7 +17,7 @@ enum NeighborhoodType {
     MOVE_CLIENT("addClientToOtherTruck"),
     MERGE_CLIENTS("mergeTrucks"),
     EXCHANGE_PART_TRUCKS("exchangePartsOfTrucks"),
-    INVERT_CLIENTS_1TRUCK("exchangeClients"),
+//    INVERT_CLIENTS_1TRUCK("exchangeClients"),
     TWO_OPTS("twoOpts"),
     RELOCATE("relocate")
     ;
@@ -127,8 +127,8 @@ public class Neighborhood {
             }
 
 
-            truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 1));
-            this.getTrucks().remove(truck1);
+            if(truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 1)))
+                this.getTrucks().remove(truck1);
 
             if(Settings.DEBUG)
                 System.out.println(truck2);
@@ -238,13 +238,13 @@ public class Neighborhood {
             }
 
             Client c1 = trucks.get(0).getClients().get(trucks.get(0).getClients().size()-1);
-            trucks.get(0).getClients().removeAll(clients1);
+            trucks.get(0).removeClients(clients1);
             trucks.get(0).getClients().remove(trucks.get(0).getClients().size()-1);
             trucks.get(0).getClients().addAll(clients2);
             trucks.get(0).getClients().add(c1);
 
             Client c2 = trucks.get(1).getClients().get(trucks.get(1).getClients().size()-1);
-            trucks.get(1).getClients().removeAll(clients2);
+            trucks.get(1).removeClients(clients2);
             trucks.get(1).getClients().remove(trucks.get(1).getClients().size()-1);
             trucks.get(1).getClients().addAll(clients1);
             trucks.get(1).getClients().add(c2);
@@ -305,7 +305,6 @@ public class Neighborhood {
 
             Collections.reverse(truck.getClients().subList(indStart, indEnd));
         }
-
     }
 
     /**
@@ -365,5 +364,10 @@ public class Neighborhood {
     public Course getSolution()
     {
         return this.course;
+    }
+
+    public void setSolution(Course course)
+    {
+        this.course = course;
     }
 }
