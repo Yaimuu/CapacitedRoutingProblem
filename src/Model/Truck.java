@@ -56,7 +56,19 @@ public class Truck implements Cloneable {
 //            fitness += distance;
 //        }
         this.fitness = computeFitness();
+        this.quantite = computeQuantite();
         return this.fitness;
+    }
+
+    public int computeQuantite()
+    {
+        int _quantite = 0;
+
+        for (Client c : this.clients) {
+            _quantite += c.quantite;
+        }
+
+        return _quantite;
     }
 
     public float computeFitness()
@@ -159,7 +171,7 @@ public class Truck implements Cloneable {
             int id = this.clients.size() != 0 && client.getNumClient() != 0 ? this.clients.size()-1 : 0;
             this.clients.add(id, client);
             this.quantite += client.getQuantite();
-
+            this.fitness = computeFitness();
 //            this.fitness += computeFitness(id, id+1);
             return true;
         }
@@ -175,13 +187,15 @@ public class Truck implements Cloneable {
             this.quantite += c.getQuantite();
         }
 
-        this.fitness += computeFitness(id, clients.size());
+//        this.fitness += computeFitness(id, clients.size());
+        this.fitness = computeFitness();
     }
 
     public void removeClient(Client client) {
         if(this.clients.contains(client))
         {
 //            this.fitness -= computeFitness(client, this.clients.get(this.clients.size()));
+            this.fitness = computeFitness();
             this.quantite -= client.getQuantite();
             this.clients.remove(client);
         }
