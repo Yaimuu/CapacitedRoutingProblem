@@ -49,7 +49,8 @@ public class ClientView extends Canvas {
             g2.drawOval(x, y, clientSize, clientSize);
         }
         g2.drawString(client.getNumClient() + "", x, y);
-        g2.drawRect(0,0, this.getWidth(), this.getHeight());
+//        g2.setColor(Color.WHITE);
+//        g2.drawRect(0,0, this.getWidth(), this.getHeight());
     }
 
     public Client getClient() {

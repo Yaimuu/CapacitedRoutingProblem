@@ -254,6 +254,6 @@ public class Truck implements Cloneable {
                 ", truckNum=" + truckNum +
                 ", quantite=" + quantite +
                 ", fitness=" + fitness +
-                '}';
+                "}\n";
     }
 }

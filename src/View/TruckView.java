@@ -63,6 +63,7 @@ public class TruckView extends Canvas {
                 g2.setColor(this.truckColor);
                 g2.setStroke(new BasicStroke(3));
                 g2.drawLine(x1, y1, x2, y2);
+                g2.setColor(Color.WHITE);
             }
             lastClient = cv;
             i++;

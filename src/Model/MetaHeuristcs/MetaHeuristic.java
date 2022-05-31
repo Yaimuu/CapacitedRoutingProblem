@@ -7,7 +7,11 @@ public abstract class MetaHeuristic {
     protected Course solution;
 
     public MetaHeuristic(Course course) {
-        this.solution = course;
+        try {
+            this.solution = (Course) course.clone();
+        } catch (Exception e) {
+
+        }
     }
 
 }

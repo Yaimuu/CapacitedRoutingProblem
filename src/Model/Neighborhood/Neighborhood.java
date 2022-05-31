@@ -2,6 +2,7 @@ package Model.Neighborhood;
 
 import Model.Client;
 import Model.Course;
+import Model.Settings;
 import Model.Truck;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +18,7 @@ enum NeighborhoodType {
     MERGE_CLIENTS("mergeTrucks"),
     EXCHANGE_PART_TRUCKS("exchangePartsOfTrucks"),
     INVERT_CLIENTS_1TRUCK("exchangeClients"),
-//    TWO_OPTS("twoOpts"),
+    TWO_OPTS("twoOpts"),
     RELOCATE("relocate")
     ;
 
@@ -55,7 +56,6 @@ public class Neighborhood {
         } catch (Exception e) {
 
         }
-
     }
 
     public void setRandomMethod() {
@@ -64,7 +64,8 @@ public class Neighborhood {
     }
 
     public void useMethod() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        System.out.println("Method used : " + currentMethod);
+        if(Settings.DEBUG)
+            System.out.println("Method used : " + currentMethod);
         Method method = this.getClass().getMethod(currentMethod.toString());
         method.invoke(this);
     }
@@ -99,10 +100,13 @@ public class Neighborhood {
                 this.getTrucks().remove(truck1);
         }
 
-//        System.out.println("truck1");
-//        System.out.println(truck1.clients.toString());
-//        System.out.println("truck2");
-//        System.out.println(truck2.clients.toString());
+        if(Settings.DEBUG)
+        {
+//            System.out.println("truck1");
+//            System.out.println(truck1.clients.toString());
+//            System.out.println("truck2");
+//            System.out.println(truck2.clients.toString());
+        }
     }
 
     /**
@@ -116,13 +120,18 @@ public class Neighborhood {
         Truck truck2 = trucks.get(1);
         if(truck1.getQuantite() + truck2.getQuantite() <= truck2.getMaxCapacity())
         {
-            System.out.println(truck1);
-            System.out.println(truck2);
+            if(Settings.DEBUG)
+            {
+                System.out.println(truck1);
+                System.out.println(truck2);
+            }
+
 
             truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 1));
             this.getTrucks().remove(truck1);
 
-            System.out.println(truck2);
+            if(Settings.DEBUG)
+                System.out.println(truck2);
         }
     }
 
@@ -148,7 +157,8 @@ public class Neighborhood {
                 {
                     if(truck1.getQuantite() + truck2.getQuantite() <= truck2.getMaxCapacity())
                     {
-                        System.out.println("Résultat avant changement : " + currentFitness);
+                        if(Settings.DEBUG)
+                            System.out.println("Résultat avant changement : " + currentFitness);
                         truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 2));
                         neighborFitness = truck2.computeFitness();
                         float newFitness = currentFitness - neighborFitness;
@@ -160,7 +170,8 @@ public class Neighborhood {
                         }
                         else
                             truck2.getClients().removeAll(truck1.getClients().subList(1, truck1.getClients().size() - 2));
-                        System.out.println("Résultat après changement : " + resultFitness);
+                        if(Settings.DEBUG)
+                            System.out.println("Résultat après changement : " + resultFitness);
                     }
                 }
             }
@@ -217,11 +228,15 @@ public class Neighborhood {
         }
 
         if (trucks.get(0).getQuantite() - capacite1 + capacite2 < trucks.get(0).getMaxCapacity() && trucks.get(1).getQuantite() - capacite2 + capacite1 < trucks.get(1).getMaxCapacity()) {
-            System.out.println("Avant : ");
-            for (int i = 0; i < 2; i++)
+            if(Settings.DEBUG)
             {
-                System.out.println("Numéro de camion : " +trucks.get(i).getTruckNum() + " - liste clients : " + trucks.get(i).getClients());
+                System.out.println("Avant : ");
+                for (int i = 0; i < 2; i++)
+                {
+                    System.out.println("Numéro de camion : " +trucks.get(i).getTruckNum() + " - liste clients : " + trucks.get(i).getClients());
+                }
             }
+
             Client c1 = trucks.get(0).getClients().get(trucks.get(0).getClients().size()-1);
             trucks.get(0).getClients().removeAll(clients1);
             trucks.get(0).getClients().remove(trucks.get(0).getClients().size()-1);
@@ -234,11 +249,15 @@ public class Neighborhood {
             trucks.get(1).getClients().addAll(clients1);
             trucks.get(1).getClients().add(c2);
 
-            System.out.println("Après : ");
-            for (int j = 0; j < 2; j++)
+            if(Settings.DEBUG)
             {
-                System.out.println("Numéro de camion : " +trucks.get(j).getTruckNum() + " - liste clients : " + trucks.get(j).getClients());
+                System.out.println("Après : ");
+                for (int j = 0; j < 2; j++)
+                {
+                    System.out.println("Numéro de camion : " +trucks.get(j).getTruckNum() + " - liste clients : " + trucks.get(j).getClients());
+                }
             }
+
         }
     }
 
@@ -266,6 +285,9 @@ public class Neighborhood {
         truck.switchClient(client1, client2);
     }
 
+    /**
+     *
+     */
     public void twoOpts()
     {
         Truck truck = getRandomTruck();
@@ -275,10 +297,16 @@ public class Neighborhood {
     public void twoOpts(Truck truck)
     {
         Random rand = new Random();
-        int indStart = rand.nextInt(1, truck.getClients().size() - 3), indEnd = rand.nextInt(indStart + 2, truck.getClients().size() - 1);
+        if(truck.getClients().size() >= 5)
+        {
+            int indStart = rand.nextInt(1, truck.getClients().size() - 3), indEnd = rand.nextInt(indStart + 2, truck.getClients().size() - 1);
 
-        System.out.println("start : " + indStart + " - end : " + indEnd);
-        Collections.reverse(truck.getClients().subList(indStart, indEnd));
+            if(Settings.DEBUG)
+                System.out.println("start : " + indStart + " - end : " + indEnd);
+
+            Collections.reverse(truck.getClients().subList(indStart, indEnd));
+        }
+
     }
 
     /**
@@ -291,7 +319,10 @@ public class Neighborhood {
 
     public void relocate(Truck truck) {
         Client client = truck.getRandomClient();
-        //System.out.println(truck.getClients());
+
+        if(Settings.DEBUG)
+            System.out.println(truck.getClients());
+
         int indexCli = truck.getClients().indexOf(client);
         int indexNext = indexCli;
         while(indexNext == indexCli) {
@@ -306,7 +337,9 @@ public class Neighborhood {
 
         truck.getClients().remove(client);
         truck.getClients().add(indexNext, client);
-        //System.out.println(truck.getClients());
+
+        if(Settings.DEBUG)
+            System.out.println(truck.getClients());
     }
 
     public List<Truck> getTrucks()

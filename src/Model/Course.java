@@ -22,7 +22,7 @@ public class Course implements Cloneable {
     {
         this.trucks = new ArrayList<>();
 
-        Settings.generateRandomPalette(100);
+        Settings.generateRandomPalette(150);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class Course implements Cloneable {
             }
             savedClients.add(clientId);
             Client client = clients.get(clientId);
-            if( newTruck.getQuantite() > newTruck.getMaxCapacity()/4 )
+            if( newTruck.getQuantite() > newTruck.getMaxCapacity()/8 )
             {
                 idTruck++;
                 newTruck.addClient(clients.get(0));
@@ -106,22 +106,28 @@ public class Course implements Cloneable {
 //        test.relocate();
 //        test.mergeTrucks();
 //        test.switchClientsFromTwoTrucks();
-//        this.trucks.get(0).twoOpts();
+//        test.twoOpts();
 //        addClientToOtherTruck();
 //        this.trucks.get(0).relocate();
 //        this.generateCourse();
 //        exchangePartsOfTrucks();
+
         RecuitSimule recuit = new RecuitSimule(this);
         try {
-            Course test2 = recuit.run(100);
+            Course test2 = recuit.run(250);
             this.courseView.setCourseUsed((Course) test2.clone());
-//            this.trucks = ((Course) test2.clone()).getTrucks();
+            System.out.println(test2);
             System.out.println(test2.computeFitness());
+
+//            this.trucks = ((Course) test2.clone()).getTrucks();
+
+//            this.courseView.setCourseUsed((Course) test.getSolution().clone());
         }
         catch (Exception e)
         {
             System.out.println(e);
         }
+
         this.updateView();
     }
 
@@ -197,5 +203,14 @@ public class Course implements Cloneable {
 
     public void setCourseView(CourseView courseView) {
         this.courseView = courseView;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "trucks=" + trucks +
+                ", Fitness=" + this.computeFitness() +
+                ", NbTrucks=" + this.trucks.size() +
+                '}';
     }
 }
