@@ -80,8 +80,12 @@ public class Neighborhood {
 
         Client c1 = truck1.getRandomClient(), c2 = truck2.getRandomClient();
 
-        truck1.updateClient(truck1.getClients().indexOf(c1), c2);
-        truck2.updateClient(truck2.getClients().indexOf(c2), c1);
+        if(truck1.getQuantite() - c1.getQuantite() + c2.getQuantite() <= truck1.getMaxCapacity() &&
+                truck2.getQuantite() - c2.getQuantite() + c1.getQuantite() <= truck2.getMaxCapacity())
+        {
+            truck1.updateClient(truck1.getClients().indexOf(c1), c2);
+            truck2.updateClient(truck2.getClients().indexOf(c2), c1);
+        }
     }
 
     /**
@@ -92,6 +96,8 @@ public class Neighborhood {
         Random rand = new Random();
         Truck truck1 = this.getTrucks().get(rand.nextInt(this.getTrucks().size()));
         Truck truck2 = this.getTrucks().get(rand.nextInt(this.getTrucks().size()));
+        truck1.getTruckFitness();
+        truck2.getTruckFitness();
         Client c1 = truck1.getRandomClient();
         if(truck2.addClient(c1))
         {
@@ -118,6 +124,8 @@ public class Neighborhood {
         List<Truck> trucks = this.course.getRandomTrucks(2,0, this.getTrucks().size());
         Truck truck1 = trucks.get(0);
         Truck truck2 = trucks.get(1);
+        truck1.getTruckFitness();
+        truck2.getTruckFitness();
         if(truck1.getQuantite() + truck2.getQuantite() <= truck2.getMaxCapacity())
         {
             if(Settings.DEBUG)

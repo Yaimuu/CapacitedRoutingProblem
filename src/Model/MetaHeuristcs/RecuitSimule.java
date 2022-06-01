@@ -25,7 +25,7 @@ public class RecuitSimule extends MetaHeuristic{
 
             float fMin = x0.computeFitness();
             Neighborhood n;
-            float mu = (float) 0.9, tk = t0;
+            float mu = (float) 0.999, tk = t0;
             for(int k=0; k < t0; k++)
             {
                 for (int l=1; l < tk; l++)
