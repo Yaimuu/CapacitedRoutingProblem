@@ -17,7 +17,7 @@ public class CourseView extends View {
     private List<TruckView> truckViews;
     private List<ClientView> clientViews;
 
-    public CourseView(List<Client> clients)
+    public CourseView()
     {
         this.truckViews = new ArrayList<>();
         this.clientViews = new ArrayList<>();
@@ -27,7 +27,7 @@ public class CourseView extends View {
 
         updateTrucks();
 
-        for (Client c : clients) {
+        for (Client c : this.courseUsed.getAllClients()) {
             this.clientViews.add(new ClientView(c));
         }
 

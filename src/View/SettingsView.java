@@ -11,6 +11,9 @@ public class SettingsView  extends JPanel {
 
 
     JButton nextStep;
+    JButton run;
+    JButton reset;
+    JButton newRandomSolution;
 
     public SettingsView() {
         Course course = Course.getInstance();

@@ -15,7 +15,7 @@ public class MainView extends JFrame {
     CourseView courseView;
     SettingsView settingsView;
 
-    public MainView(List<Client> clients) {
+    public MainView() {
         super("Capacited Routing Problem");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -33,7 +33,7 @@ public class MainView extends JFrame {
         GridLayout gridLayout = new GridLayout();
         JSplitPane splitPane = new JSplitPane();
 
-        this.courseView = new CourseView(clients);
+        this.courseView = new CourseView();
         this.settingsView = new SettingsView();
 
 //        this.courseView.setBorder(BorderFactory.createEtchedBorder());

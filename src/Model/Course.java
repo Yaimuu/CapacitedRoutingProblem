@@ -51,7 +51,7 @@ public class Course implements Cloneable {
     {
         Course course = new Course();
 
-        return generateCourse("A3205.txt");
+        return generateCourse("A3305.txt");
     }
 
     public Course generateCourse(String filename)
