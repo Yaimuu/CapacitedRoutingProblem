@@ -14,7 +14,7 @@ public class RecuitSimule extends MetaHeuristic{
         super(course);
     }
 
-    public Course run(float t0) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public Course run(float t0, int n1, int n2) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         Random rand = new Random();
         int i = 0;
         Course x0 = null, xMin = null, xi = null;
@@ -26,9 +26,9 @@ public class RecuitSimule extends MetaHeuristic{
             float fMin = x0.computeFitness();
             Neighborhood n;
             float mu = (float) 0.999, tk = t0;
-            for(int k=0; k < t0; k++)
+            for(int k=0; k < n1; k++)
             {
-                for (int l=1; l < tk; l++)
+                for (int l=1; l < n2; l++)
                 {
                     n = new Neighborhood(xi);
                     n.useMethod();

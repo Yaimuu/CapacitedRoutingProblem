@@ -115,7 +115,7 @@ public class Course implements Cloneable {
 
         RecuitSimule recuit = new RecuitSimule(this);
         try {
-            Course test2 = recuit.run(250);
+            Course test2 = recuit.run(200, 100, 100);
             this.courseView.setCourseUsed((Course) test2.clone());
             System.out.println(test2);
             System.out.println(test2.computeFitness());
