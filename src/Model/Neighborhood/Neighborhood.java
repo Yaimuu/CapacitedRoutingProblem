@@ -17,7 +17,7 @@ enum NeighborhoodType {
     MOVE_CLIENT("addClientToOtherTruck"),
     MERGE_CLIENTS("mergeTrucks"),
     EXCHANGE_PART_TRUCKS("exchangePartsOfTrucks"),
-//    INVERT_CLIENTS_1TRUCK("exchangeClients"),
+    INVERT_CLIENTS_1TRUCK("exchangeClients"),
     TWO_OPTS("twoOpts"),
     RELOCATE("relocate")
     ;

@@ -243,11 +243,9 @@ public class Truck implements Cloneable {
     public void switchClient(Client c1, Client c2)
     {
         int id1 = this.clients.indexOf(c1), id2 = this.clients.indexOf(c2);
-        this.removeClient(c1);
-        this.addClient(id1, c2);
 
-        this.removeClient(c2);
-        this.addClient(id2, c1);
+        this.clients.set(id1, c2);
+        this.clients.set(id2, c1);
     }
 
     public List<Double> getDistances() {
@@ -299,12 +297,14 @@ public class Truck implements Cloneable {
 
     @Override
     public String toString() {
-        return "Truck{" +
+        String res = quantite > maxCapacity ? Settings.ANSI_RED : "";
+        res += "Truck{" +
                 "maxCapacity=" + maxCapacity +
                 ", clients=" + clients +
                 ", truckNum=" + truckNum +
                 ", quantite=" + quantite +
                 ", fitness=" + fitness +
-                "}\n";
+                "}\n" + Settings.ANSI_RESET;
+        return res;
     }
 }
