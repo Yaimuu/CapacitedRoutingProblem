@@ -66,8 +66,17 @@ public class CourseView extends View {
 //        this.updateView();
     }
 
+    public void updateClients()
+    {
+        this.clientViews.clear();
+        for (Client c : this.courseUsed.getAllClients()) {
+            this.clientViews.add(new ClientView(c));
+        }
+    }
+
     public void updateView() {
         updateTrucks();
+        updateClients();
 
         this.revalidate();
         this.repaint();

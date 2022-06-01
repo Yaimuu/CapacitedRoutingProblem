@@ -1,6 +1,7 @@
 package View;
 
 import Model.Course;
+import Model.Settings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,11 +16,16 @@ public class SettingsView  extends JPanel {
     JButton reset;
     JButton newRandomSolution;
 
+    JComboBox filesCombo;
+
     public SettingsView() {
         Course course = Course.getInstance();
 
         this.nextStep = new JButton("Next");
-        this.nextStep.setBounds(90,100,100,40);
+        this.run = new JButton("Run");
+        this.reset = new JButton("Reset");
+
+        this.filesCombo = new JComboBox(Settings.getAllMapFiles().toArray());
 
         this.nextStep.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -27,7 +33,29 @@ public class SettingsView  extends JPanel {
             }
         });
 
+        this.run.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                course.run();
+            }
+        });
+
+        this.reset.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                course.reset();
+            }
+        });
+
+        this.filesCombo.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                Settings.curentFile = (String) filesCombo.getSelectedItem();
+                course.reset();
+            }
+        });
+
         this.add(this.nextStep);
+        this.add(this.run);
+        this.add(this.reset);
+        this.add(this.filesCombo);
         this.setVisible(true);
     }
 

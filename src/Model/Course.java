@@ -51,12 +51,12 @@ public class Course implements Cloneable {
     {
         Course course = new Course();
 
-        return generateCourse("A3305.txt");
+        return generateCourse(Settings.curentFile);
     }
 
     public Course generateCourse(String filename)
     {
-        return generateCourse(CourseFileManager.readFile("./Ressources/Tests/" + filename));
+        return generateCourse(CourseFileManager.readFile(Settings.MAP_DIRECTORY + filename));
     }
 
     public Course generateCourse(List<Client> clients)
@@ -113,17 +113,41 @@ public class Course implements Cloneable {
 
 //        this.generateCourse();
 
+        try {
+//            this.trucks = ((Course) test.getSolution().clone()).getTrucks();
+//
+//            this.courseView.setCourseUsed((Course) test.getSolution().clone());
+//            System.out.println(test.getSolution());
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
+
+        this.updateView();
+    }
+
+    public void run() {
         RecuitSimule recuit = new RecuitSimule(this);
         try {
             Course test2 = recuit.run(200, 100, 100);
             this.courseView.setCourseUsed((Course) test2.clone());
             System.out.println(test2);
             System.out.println(test2.computeFitness());
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+        }
 
-//            this.trucks = ((Course) test.getSolution().clone()).getTrucks();
-//
-//            this.courseView.setCourseUsed((Course) test.getSolution().clone());
-//            System.out.println(test.getSolution());
+        this.updateView();
+    }
+
+    public void reset() {
+        this.generateCourse();
+
+        try {
+            this.courseView.setCourseUsed((Course) this.clone());
         }
         catch (Exception e)
         {

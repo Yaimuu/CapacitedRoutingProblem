@@ -55,7 +55,7 @@ public class MainView extends JFrame {
         this.setContentPane(mainPanel);
 
         this.pack();
-        setSize(550,700);
+        setSize(1000,800);
         setVisible(true);
     }
 

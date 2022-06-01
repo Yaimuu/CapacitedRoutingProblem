@@ -18,7 +18,8 @@ public class ClientView extends Canvas {
         Random rand = new Random();
         this.client = client;
         this.clientSize = 10;
-        this.clientColor = new Color(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256));
+//        this.clientColor = new Color(rand.nextInt(256),rand.nextInt(256),rand.nextInt(256)); //#202124
+        this.clientColor = new Color(32, 33, 36);
     }
 
     public ClientView(Client client, int clientSize) {
@@ -45,11 +46,11 @@ public class ClientView extends Canvas {
         else
         {
             g2.setColor(this.clientColor);
-            g2.fillOval(x, y, clientSize, clientSize);
+//            g2.fillOval(x, y, clientSize, clientSize);
             g2.drawOval(x, y, clientSize, clientSize);
         }
         g2.drawString(client.getNumClient() + "", x, y);
-//        g2.setColor(Color.WHITE);
+        g2.setColor(Color.WHITE);
 //        g2.drawRect(0,0, this.getWidth(), this.getHeight());
     }
 
