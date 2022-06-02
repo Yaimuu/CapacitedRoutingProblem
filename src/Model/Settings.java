@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 
 public class Settings {
 
-    public final static int scale = 5;
     public final static boolean DEBUG = false;
 
     public final static String MAP_DIRECTORY = "./Ressources/Tests/";
@@ -29,6 +28,7 @@ public class Settings {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
+    public static int scale = 5;
     private static List<Color> paletteTruck;
 
     public static Course currentCourse = Course.getInstance();

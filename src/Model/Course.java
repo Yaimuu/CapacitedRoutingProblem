@@ -129,13 +129,14 @@ public class Course implements Cloneable {
     }
 
     public void run() {
+        reset();
 //        RecuitSimule recuit = new RecuitSimule(this);
         try {
             Course metaSolution = Settings.currentHeuristic.run();
 //            this.courseView.setCourseUsed((Course) metaSolution.clone());
             Settings.updateCourse((Course) metaSolution.clone());
             System.out.println(metaSolution);
-            System.out.println(metaSolution.computeFitness());
+//            System.out.println(metaSolution.computeFitness());
         }
         catch (Exception e)
         {
