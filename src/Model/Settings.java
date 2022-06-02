@@ -31,6 +31,8 @@ public class Settings {
 
     private static List<Color> paletteTruck;
 
+    public static Course currentCourse = Course.getInstance();
+
     public static Map<String, MetaHeuristic> metaHeuristicMap = Stream.of(new Object[][] {
             { "Recuit", new RecuitSimule() },
             { "Tabou", new TabouMethod() },
@@ -64,5 +66,12 @@ public class Settings {
 
     public static void updateCurrentHeuristic(String key) {
         currentHeuristic = metaHeuristicMap.get(key);
+    }
+
+    public static void updateCourse(Course course) {
+        try {
+            currentCourse = (Course) course.clone();
+            currentHeuristic.setSolution((Course) currentCourse.clone());
+        }catch (Exception e) {}
     }
 }

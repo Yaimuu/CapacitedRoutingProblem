@@ -8,6 +8,7 @@ import View.CourseView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class Course implements Cloneable {
 
@@ -131,7 +132,8 @@ public class Course implements Cloneable {
 //        RecuitSimule recuit = new RecuitSimule(this);
         try {
             Course metaSolution = Settings.currentHeuristic.run();
-            this.courseView.setCourseUsed((Course) metaSolution.clone());
+//            this.courseView.setCourseUsed((Course) metaSolution.clone());
+            Settings.updateCourse((Course) metaSolution.clone());
             System.out.println(metaSolution);
             System.out.println(metaSolution.computeFitness());
         }
@@ -147,7 +149,8 @@ public class Course implements Cloneable {
         this.generateCourse();
 
         try {
-            this.courseView.setCourseUsed((Course) this.clone());
+//            this.courseView.setCourseUsed((Course) this.clone());
+            Settings.updateCourse((Course) this.clone());
         }
         catch (Exception e)
         {

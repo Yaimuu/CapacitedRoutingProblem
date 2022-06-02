@@ -22,16 +22,18 @@ public class CourseView extends View {
         this.truckViews = new ArrayList<>();
         this.clientViews = new ArrayList<>();
         try {
-            this.courseUsed = (Course) Course.getInstance().clone();
+//            this.courseUsed = (Course) Course.getInstance().clone();
+//            Settings.currentCourse = (Course) Course.getInstance().clone();
+            Settings.updateCourse((Course) Course.getInstance().clone());
         }catch (Exception e) {}
 
         updateTrucks();
 
-        for (Client c : this.courseUsed.getAllClients()) {
+        for (Client c : Settings.currentCourse.getAllClients()) {
             this.clientViews.add(new ClientView(c));
         }
 
-        System.out.println(this.courseUsed.computeFitness());
+        System.out.println(Settings.currentCourse.computeFitness());
     }
 
     @Override
@@ -55,10 +57,10 @@ public class CourseView extends View {
     {
         this.truckViews.clear();
 //        Course course = Course.getInstance();
-        System.out.println(this.courseUsed.computeFitness());
+        System.out.println(Settings.currentCourse.computeFitness());
 
-        for (int i = 0; i < this.courseUsed.getTrucks().size(); i++) {
-            TruckView tv = new TruckView(this.courseUsed.getTrucks().get(i));
+        for (int i = 0; i < Settings.currentCourse.getTrucks().size(); i++) {
+            TruckView tv = new TruckView(Settings.currentCourse.getTrucks().get(i));
             tv.setTruckColor(Settings.getPalette().get(i % Settings.getPalette().size()));
             this.truckViews.add(tv);
         }
@@ -69,7 +71,7 @@ public class CourseView extends View {
     public void updateClients()
     {
         this.clientViews.clear();
-        for (Client c : this.courseUsed.getAllClients()) {
+        for (Client c : Settings.currentCourse.getAllClients()) {
             this.clientViews.add(new ClientView(c));
         }
     }
