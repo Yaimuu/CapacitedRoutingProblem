@@ -9,9 +9,19 @@ import java.util.Random;
 
 public class RecuitSimule extends MetaHeuristic{
 
+    public RecuitSimule() {
+        super();
+        this.name = "Recuit Simulé";
+    }
 
     public RecuitSimule(Course course) {
         super(course);
+        this.name = "Recuit Simulé";
+    }
+
+    public Course run() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        System.out.println("Run " + this.name);
+        return this.run(200, 100, 100);
     }
 
     public Course run(float t0, int n1, int n2) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {

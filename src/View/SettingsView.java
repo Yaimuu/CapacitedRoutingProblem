@@ -17,6 +17,7 @@ public class SettingsView  extends JPanel {
     JButton newRandomSolution;
 
     JComboBox filesCombo;
+    JComboBox metaCombo;
 
     public SettingsView() {
         Course course = Course.getInstance();
@@ -26,6 +27,7 @@ public class SettingsView  extends JPanel {
         this.reset = new JButton("Reset");
 
         this.filesCombo = new JComboBox(Settings.getAllMapFiles().toArray());
+        this.metaCombo = new JComboBox(Settings.metaHeuristicMap.keySet().toArray());
 
         this.nextStep.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -52,10 +54,18 @@ public class SettingsView  extends JPanel {
             }
         });
 
+        this.metaCombo.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                Settings.updateCurrentHeuristic((String) metaCombo.getSelectedItem());
+                course.reset();
+            }
+        });
+
         this.add(this.nextStep);
         this.add(this.run);
         this.add(this.reset);
         this.add(this.filesCombo);
+        this.add(this.metaCombo);
         this.setVisible(true);
     }
 

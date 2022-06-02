@@ -1,11 +1,15 @@
 package Model;
 
+import Model.MetaHeuristcs.MetaHeuristic;
+import Model.MetaHeuristcs.RecuitSimule;
+import Model.MetaHeuristcs.TabouMethod;
+
 import java.awt.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Settings {
 
@@ -26,6 +30,13 @@ public class Settings {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     private static List<Color> paletteTruck;
+
+    public static Map<String, MetaHeuristic> metaHeuristicMap = Stream.of(new Object[][] {
+            { "Recuit", new RecuitSimule() },
+            { "Tabou", new TabouMethod() },
+    }).collect(Collectors.toMap(data -> (String) data[0], data -> (MetaHeuristic) data[1]));
+
+    public static MetaHeuristic currentHeuristic = metaHeuristicMap.get(metaHeuristicMap.keySet().toArray()[0]);
 
     public static void generatePaletteFromFile(String filename)
     {
@@ -49,5 +60,9 @@ public class Settings {
     {
         File f = new File(MAP_DIRECTORY);
         return Arrays.asList(f.list());
+    }
+
+    public static void updateCurrentHeuristic(String key) {
+        currentHeuristic = metaHeuristicMap.get(key);
     }
 }

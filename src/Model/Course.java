@@ -128,12 +128,12 @@ public class Course implements Cloneable {
     }
 
     public void run() {
-        RecuitSimule recuit = new RecuitSimule(this);
+//        RecuitSimule recuit = new RecuitSimule(this);
         try {
-            Course test2 = recuit.run(200, 100, 100);
-            this.courseView.setCourseUsed((Course) test2.clone());
-            System.out.println(test2);
-            System.out.println(test2.computeFitness());
+            Course metaSolution = Settings.currentHeuristic.run();
+            this.courseView.setCourseUsed((Course) metaSolution.clone());
+            System.out.println(metaSolution);
+            System.out.println(metaSolution.computeFitness());
         }
         catch (Exception e)
         {
