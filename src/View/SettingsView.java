@@ -61,7 +61,7 @@ public class SettingsView  extends JPanel {
             }
         });
 
-        this.add(this.nextStep);
+//        this.add(this.nextStep);
         this.add(this.run);
         this.add(this.reset);
         this.add(this.filesCombo);

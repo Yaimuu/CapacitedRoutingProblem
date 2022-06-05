@@ -95,7 +95,7 @@ public class Course implements Cloneable {
 
         for (Truck t:
                 this.trucks) {
-            System.out.println(t);
+            System.out.print(t);
         }
 
         return this;

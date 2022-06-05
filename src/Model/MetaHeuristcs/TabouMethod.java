@@ -19,7 +19,13 @@ public class TabouMethod extends MetaHeuristic {
         this.name = "Tabou";
     }
 
-    public Course run(int maxIter) throws CloneNotSupportedException {
+    @Override
+    public Course run() {
+        System.out.println("Run " + this.name);
+        return this.run(100);
+    }
+
+    public Course run(int maxIter) {
         Course x0 = null, xMin = null, xi = null;
         try{
             x0 = (Course) this.solution.clone();
@@ -36,7 +42,7 @@ public class TabouMethod extends MetaHeuristic {
                 ArrayList<Update> neighborList = new ArrayList<>();
 
                 // Récupération des meilleurs voisinages par méthodes
-                neighborList = getBestNeighborhood(xi);
+                neighborList = getBestNeighborhood(xi, tabouList);
 
                 // Récupérer un voisinage
                 // Récupérer le meilleur de tous les voisinnage
@@ -48,6 +54,7 @@ public class TabouMethod extends MetaHeuristic {
                     if(neighbor.getFitness() < fitness)
                     {
                         updateToApply = neighbor;
+                        fitness = updateToApply.getFitness();
                     }
                 }
 
@@ -61,7 +68,7 @@ public class TabouMethod extends MetaHeuristic {
 
                 // Faire la modification avec le voisinage
                 //TODO
-                //neighborhood.useMethod(updateToApply.getNeighborhoodType());
+                neighborhood.useMethod(updateToApply);
 
                 // Si la nouvelle solution devient la meilleure solution alors on modifie les variables
                 if(fitness < fMin)
@@ -69,14 +76,21 @@ public class TabouMethod extends MetaHeuristic {
                     fMin = neighborhood.getFitness();
                     xMin = (Course) neighborhood.getSolution().clone();
                 }
+                xi = (Course) neighborhood.getSolution().clone();
             }
-        }catch (Exception e) {
-
+        }catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
         return xMin;
     }
 
-    private ArrayList<Update> getBestNeighborhood(Course course) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    private ArrayList<Update> getBestNeighborhood(Course course, ArrayList<Update> tabouList) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         //Liste des méthodes à utiliser
         ArrayList<String> methodsBest = new ArrayList<>();
         methodsBest.add("mergeTrucksBest");
@@ -87,7 +101,7 @@ public class TabouMethod extends MetaHeuristic {
         // Parcours de toutes les méthodes et récupération des meilleurs voisinages. On les récupère sous forme de modifications.
         for (String method : methodsBest)
         {
-           // result = neighbor.useMethod(method);
+            modifications.add(neighbor.useMethod(method, tabouList)) ;
         }
 
         return modifications;
