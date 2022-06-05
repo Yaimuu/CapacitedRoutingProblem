@@ -35,7 +35,7 @@ public class RecuitSimule extends MetaHeuristic{
 
             float fMin = x0.computeFitness();
             Neighborhood n;
-            float mu = (float) 0.999, tk = t0;
+            float mu = (float) 0.99, tk = t0;
             for(int k=0; k < n1; k++)
             {
                 for (int l=1; l < n2; l++)
@@ -66,11 +66,9 @@ public class RecuitSimule extends MetaHeuristic{
                 }
                 tk = tk * mu;
             }
-
         }catch (Exception e) {
 
         }
-
         return xMin;
     }
 

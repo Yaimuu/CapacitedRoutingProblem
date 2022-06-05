@@ -1,9 +1,6 @@
 package Model.Neighborhood;
 
-import Model.Client;
-import Model.Course;
-import Model.Settings;
-import Model.Truck;
+import Model.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -67,6 +64,13 @@ public class Neighborhood {
         if(Settings.DEBUG)
             System.out.println("Method used : " + currentMethod);
         Method method = this.getClass().getMethod(currentMethod.toString());
+        method.invoke(this);
+    }
+
+    public void useMethod(String methodName) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if(Settings.DEBUG)
+            System.out.println("Method used : " + currentMethod);
+        Method method = this.getClass().getMethod(methodName);
         method.invoke(this);
     }
 
@@ -143,10 +147,10 @@ public class Neighborhood {
         }
     }
 
-    /**
+    /***
      * Retourne la meilleure fusion de 2 tournées
      */
-    public float mergeTrucksBest()
+    public Update mergeTrucksBest(ArrayList<Update> updates)
     {
         float initialFitness = 0;
         float resultFitness = 0;
@@ -156,6 +160,13 @@ public class Neighborhood {
         {
             for(Truck truck2 : this.getTrucks())
             {
+                // Si la configuration fait partie de la liste tabou, alors on passe à la configuration suivante
+                for (Update update : updates)
+                {
+                    if(update.getTrucks().get(0) == truck1 && update.getTrucks().get(1) == truck2 && update.getNeighborhoodType() == "mergeTrucksBest")
+                        continue;
+                }
+
                 float currentFitness = truck2.computeFitness();
                 initialFitness = currentFitness;
                 float neighborFitness = 0;
@@ -170,26 +181,24 @@ public class Neighborhood {
                         truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 2));
                         neighborFitness = truck2.computeFitness();
                         float newFitness = currentFitness - neighborFitness;
-                        if (resultFitness < newFitness)
+                        if (resultFitness > newFitness)
                         {
                             resultFitness = newFitness;
                             bestTruck1 = truck1;
                             bestTruck2 = truck2;
                         }
-                        else
-                            truck2.getClients().removeAll(truck1.getClients().subList(1, truck1.getClients().size() - 2));
+                        truck2.getClients().removeAll(truck1.getClients().subList(1, truck1.getClients().size() - 2));
                         if(Settings.DEBUG)
                             System.out.println("Résultat après changement : " + resultFitness);
                     }
                 }
             }
         }
-        if (resultFitness < initialFitness)
-        {
-            this.getTrucks().remove(bestTruck1);
-        }
-        return resultFitness;
+        ArrayList<Truck> trucks = new ArrayList<>();
+        Update update = new Update(this, "mergeTrucksBest", trucks, null, resultFitness);
+        return update;
     }
+
 
     /***
      * Echange de morceau de tournée entre 2 camions
