@@ -2,10 +2,12 @@ package Model.MetaHeuristcs;
 
 import Model.Course;
 import Model.Neighborhood.Neighborhood;
+import Model.Neighborhood.NeighborhoodTabou;
 import Model.Update;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TabouMethod extends MetaHeuristic {
 
@@ -22,7 +24,7 @@ public class TabouMethod extends MetaHeuristic {
     @Override
     public Course run() {
         System.out.println("Run " + this.name);
-        return this.run(100);
+        return this.run(500);
     }
 
     public Course run(int maxIter) {
@@ -38,8 +40,8 @@ public class TabouMethod extends MetaHeuristic {
             for(int i = 0; i < maxIter; i++)
             {
                 // Initialisation du voisinage
-                Neighborhood neighborhood = new Neighborhood(xi);
-                ArrayList<Update> neighborList = new ArrayList<>();
+                NeighborhoodTabou neighborhood = new NeighborhoodTabou(xi);
+                ArrayList<Update> neighborList;
 
                 // Récupération des meilleurs voisinages par méthodes
                 neighborList = getBestNeighborhood(xi, tabouList);
@@ -91,17 +93,18 @@ public class TabouMethod extends MetaHeuristic {
     }
 
     private ArrayList<Update> getBestNeighborhood(Course course, ArrayList<Update> tabouList) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        //Liste des méthodes à utiliser
-        ArrayList<String> methodsBest = new ArrayList<>();
-        methodsBest.add("mergeTrucksBest");
 
-        Neighborhood neighbor = new Neighborhood(course);
+        NeighborhoodTabou neighbor = new NeighborhoodTabou(course);
+
+        //Liste des méthodes à utiliser
+        List<String> methodsBest = neighbor.getAllTabouMethods();
+//        methodsBest.add("mergeTrucksBest");
 
         ArrayList<Update> modifications = new ArrayList<>();
         // Parcours de toutes les méthodes et récupération des meilleurs voisinages. On les récupère sous forme de modifications.
         for (String method : methodsBest)
         {
-            modifications.add(neighbor.useMethod(method, tabouList)) ;
+            modifications.add(neighbor.useMethod(method, tabouList));
         }
 
         return modifications;

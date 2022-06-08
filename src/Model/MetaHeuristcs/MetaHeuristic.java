@@ -27,11 +27,7 @@ public abstract class MetaHeuristic {
         }
     }
 
-    public Course run() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        System.out.println("Run " + this.name);
-        return this.solution;
-    }
-
+    public abstract Course run() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException ;
 
     public Course getSolution() {
         return solution;

@@ -67,25 +67,6 @@ public class Neighborhood {
         method.invoke(this);
     }
 
-    public Update useMethod(String methodName, List<Update> tabouList) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        if(Settings.DEBUG)
-            System.out.println("Method used : " + methodName);
-        Method method = this.getClass().getMethod(methodName, tabouList.getClass());
-        System.out.println(method);
-        Update update = (Update) method.invoke(this, tabouList);
-        return update;
-    }
-
-    public void useMethod(Update updateToApply) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        if(updateToApply != null)
-        {
-            if(Settings.DEBUG)
-                System.out.println("Method used : " + updateToApply.getNeighborhoodType());
-            Method method = this.getClass().getMethod(updateToApply.getNeighborhoodType(), updateToApply.getClass());
-            method.invoke(this, updateToApply);
-        }
-    }
-
     /**
      * Inversion entre 1 client de 2 tournées différentes
      */
@@ -104,6 +85,8 @@ public class Neighborhood {
         }
     }
 
+
+
     /**
      * On prend un client d'une tournée et on le met dans une autre tournée
      */
@@ -120,14 +103,6 @@ public class Neighborhood {
             truck1.removeClient(c1);
             if(truck1.getClients().size() <= 2)
                 this.getTrucks().remove(truck1);
-        }
-
-        if(Settings.DEBUG)
-        {
-//            System.out.println("truck1");
-//            System.out.println(truck1.clients.toString());
-//            System.out.println("truck2");
-//            System.out.println(truck2.clients.toString());
         }
     }
 
@@ -159,72 +134,7 @@ public class Neighborhood {
         }
     }
 
-    public void mergeTrucks(Update updateToApply)
-    {
-        System.out.println("mergeTrucks Tabou");
-        int id1 = this.getTrucks().indexOf(updateToApply.getTrucks().get(0)), id2 = this.getTrucks().indexOf(updateToApply.getTrucks().get(1));
-        Truck t1 = null;
-        Truck t2 = null;
-        for(Truck t : this.getTrucks())
-        {
-            if(t.getTruckNum() == updateToApply.getTrucks().get(0).getTruckNum())
-                t1 = t;
-            if(t.getTruckNum() == updateToApply.getTrucks().get(1).getTruckNum())
-                t2 = t;
-        }
 
-        t2.addClients(t1.getClients().subList(1, t1.getClients().size() - 1));
-        this.getTrucks().remove(t1);
-    }
-
-    /***
-     * Retourne la meilleure fusion de 2 tournées
-     */
-    public Update mergeTrucksBest(ArrayList<Update> updates)
-    {
-        float resultFitness = Float.MAX_VALUE;
-        Truck bestTruck1 = null;
-        Truck bestTruck2 = null;
-        for(Truck truck1 : this.getTrucks())
-        {
-            for(Truck truck2 : this.getTrucks())
-            {
-                // Si la configuration fait partie de la liste tabou, alors on passe à la configuration suivante
-                for (Update update : updates)
-                {
-                    if(update.getTrucks().get(0) == truck1 && update.getTrucks().get(1) == truck2 && update.getNeighborhoodType() == "mergeTrucksBest")
-                        continue;
-                }
-
-                if (truck1 == truck2)
-                    continue;
-                else
-                {
-                    if(truck1.getQuantite() + truck2.getQuantite() <= truck2.getMaxCapacity())
-                    {
-                        if(Settings.DEBUG)
-                            System.out.println("Résultat avant changement : " + this.getFitness());
-                        truck2.addClients(truck1.getClients().subList(1, truck1.getClients().size() - 1));
-                        float newFitness = this.getFitness() - truck1.getTruckFitness();
-                        if (resultFitness > newFitness)
-                        {
-                            resultFitness = newFitness;
-                            bestTruck1 = truck1;
-                            bestTruck2 = truck2;
-                        }
-                        truck2.getClients().removeAll(truck1.getClients().subList(1, truck1.getClients().size() - 1));
-                        if(Settings.DEBUG)
-                            System.out.println("Résultat après changement : " + resultFitness);
-                    }
-                }
-            }
-        }
-        ArrayList<Truck> trucks = new ArrayList<>();
-        trucks.add(bestTruck1);
-        trucks.add(bestTruck2);
-        Update update = new Update(this, "mergeTrucks", trucks, null, resultFitness);
-        return update;
-    }
 
 
     /***
