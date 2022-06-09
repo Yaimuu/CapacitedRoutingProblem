@@ -268,6 +268,10 @@ public class Truck implements Cloneable {
         return quantite;
     }
 
+    public void updateQuantite() {
+        this.quantite = this.computeQuantite();
+    }
+
     public void setQuantite(int quantite) {
         this.quantite = quantite;
     }
