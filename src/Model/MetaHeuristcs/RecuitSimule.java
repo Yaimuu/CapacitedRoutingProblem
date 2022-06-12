@@ -2,6 +2,7 @@ package Model.MetaHeuristcs;
 
 import Model.Course;
 import Model.Neighborhood.Neighborhood;
+import Model.Settings;
 import Model.Solution.Solution;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,20 +12,24 @@ public class RecuitSimule extends MetaHeuristic{
 
     public RecuitSimule() {
         super();
-        this.name = "Recuit Simulé";
+        this.name = MetaheuristicName.RECUIT;
     }
 
     public RecuitSimule(Course course) {
         super(course);
-        this.name = "Recuit Simulé";
+        this.name = MetaheuristicName.RECUIT;
     }
 
     public Course run() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         System.out.println("Run " + this.name);
-        return this.run(200, 100, 100);
+        System.out.println(Settings.getRecuitSettings());
+        return this.run(Settings.getRecuitSettings().get("T0").get(0),
+                Settings.getRecuitSettings().get("N1").get(0).intValue(),
+                Settings.getRecuitSettings().get("N2").get(0).intValue(),
+                Settings.getRecuitSettings().get("Mu").get(0));
     }
 
-    public Course run(float t0, int n1, int n2) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public Course run(float t0, int n1, int n2, float mu) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         Random rand = new Random();
         int i = 0;
         Course x0 = null, xMin = null, xi = null;
@@ -35,7 +40,7 @@ public class RecuitSimule extends MetaHeuristic{
 
             float fMin = x0.computeFitness();
             Neighborhood n;
-            float mu = (float) 0.99, tk = t0;
+            float tk = t0;
             for(int k=0; k < n1; k++)
             {
                 for (int l=1; l < n2; l++)

@@ -6,11 +6,11 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class MetaHeuristic {
 
-    protected String name;
+    protected MetaheuristicName name;
     protected Course solution;
 
     public MetaHeuristic() {
-        this.name = "None";
+        this.name = MetaheuristicName.NONE;
         try {
             this.solution = (Course) Course.getInstance().clone();
         } catch (Exception e) {
@@ -35,5 +35,9 @@ public abstract class MetaHeuristic {
 
     public void setSolution(Course solution) {
         this.solution = solution;
+    }
+
+    public MetaheuristicName getName() {
+        return name;
     }
 }

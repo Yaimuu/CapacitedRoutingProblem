@@ -1,6 +1,7 @@
 package Model;
 
 import Model.MetaHeuristcs.MetaHeuristic;
+import Model.MetaHeuristcs.MetaheuristicName;
 import Model.MetaHeuristcs.RecuitSimule;
 import Model.MetaHeuristcs.TabouMethod;
 
@@ -40,6 +41,19 @@ public class Settings {
 
     public static MetaHeuristic currentHeuristic = metaHeuristicMap.get(metaHeuristicMap.keySet().toArray()[0]);
 
+    private static Map<String, List<Float>> recuitSettings = Stream.of(new Object[][] {
+            { "T0", Arrays.asList(new Float[]{300f, 0f, 1000f})},
+            { "N1", Arrays.asList(new Float[]{100f, 0f, 1000f})},
+            { "N2", Arrays.asList(new Float[]{100f, 0f, 1000f})},
+            { "Mu", Arrays.asList(new Float[]{0.999f, 0f, 1f})},
+    }).collect(Collectors.toMap(data -> (String) data[0], data -> (List<Float>) data[1]));
+
+    private static Map<String, List<Float>> TabouSettings = Stream.of(new Object[][] {
+            { "MaxIter", Arrays.asList(new Float[]{200f, 0f, 1000f}) }
+    }).collect(Collectors.toMap(data -> (String) data[0], data -> (List<Float>) data[1]));
+
+    public static Map<String, List<Float>> currentHeuristicSettings = TabouSettings;
+
     public static void generatePaletteFromFile(String filename)
     {
 
@@ -73,5 +87,22 @@ public class Settings {
             currentCourse = (Course) course.clone();
             currentHeuristic.setSolution((Course) currentCourse.clone());
         }catch (Exception e) {}
+
+        switch (currentHeuristic.getName()) {
+            case TABOU:
+                currentHeuristicSettings = TabouSettings;
+                break;
+            case RECUIT:
+                currentHeuristicSettings = recuitSettings;
+                break;
+        }
+    }
+
+    public static Map<String, List<Float>> getRecuitSettings() {
+        return recuitSettings;
+    }
+
+    public static Map<String, List<Float>> getTabouSettings() {
+        return TabouSettings;
     }
 }

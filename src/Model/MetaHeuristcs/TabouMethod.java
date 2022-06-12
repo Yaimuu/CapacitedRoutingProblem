@@ -3,6 +3,7 @@ package Model.MetaHeuristcs;
 import Model.Course;
 import Model.Neighborhood.Neighborhood;
 import Model.Neighborhood.NeighborhoodTabou;
+import Model.Settings;
 import Model.Update;
 
 import java.lang.reflect.InvocationTargetException;
@@ -13,18 +14,19 @@ public class TabouMethod extends MetaHeuristic {
 
     public TabouMethod() {
         super();
-        this.name = "Tabou";
+        this.name = MetaheuristicName.TABOU;
     }
 
     public TabouMethod(Course course) {
         super(course);
-        this.name = "Tabou";
+        this.name = MetaheuristicName.TABOU;
     }
 
     @Override
     public Course run() {
         System.out.println("Run " + this.name);
-        return this.run(500);
+        System.out.println("MaxIter : " + Settings.getTabouSettings().get("MaxIter").get(0).intValue());
+        return this.run(Settings.getTabouSettings().get("MaxIter").get(0).intValue());
     }
 
     public Course run(int maxIter) {
