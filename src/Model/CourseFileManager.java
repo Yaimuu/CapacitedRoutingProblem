@@ -5,6 +5,7 @@ import View.CourseView;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,6 +40,20 @@ public class CourseFileManager {
             e.printStackTrace();
         }
         return clientList;
+    }
+
+    public static List<String> getAllFiles()
+    {
+        String[] pathnames;
+
+        // Creates a new File instance by converting the given pathname string
+        // into an abstract pathname
+        File f = new File(Settings.MAP_DIRECTORY);
+
+        // Populates the array with names of files and directories
+        pathnames = f.list();
+
+        return Arrays.asList(pathnames);
     }
 
     public static boolean generateFile(Course course)

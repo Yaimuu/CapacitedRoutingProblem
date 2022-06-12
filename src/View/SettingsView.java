@@ -35,7 +35,7 @@ public class SettingsView  extends JPanel {
 
         Course course = Course.getInstance();
 
-        this.nextStep = new JButton("Next");
+        this.nextStep = new JButton("Stats");
         this.run = new JButton("Run");
         this.reset = new JButton("Reset");
 
@@ -75,7 +75,7 @@ public class SettingsView  extends JPanel {
             }
         });
 
-//        this.add(this.nextStep);
+        this.add(this.nextStep);
         this.add(this.run);
         this.add(this.reset);
         this.add(this.filesCombo);

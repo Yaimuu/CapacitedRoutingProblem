@@ -4,9 +4,12 @@ import Model.MetaHeuristcs.MetaHeuristic;
 import Model.MetaHeuristcs.MetaheuristicName;
 import Model.MetaHeuristcs.RecuitSimule;
 import Model.MetaHeuristcs.TabouMethod;
+import com.opencsv.CSVWriter;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +19,7 @@ public class Settings {
 
     public final static boolean DEBUG = false;
 
+    public final static String STATS_DIRECTORY = "./Ressources/";
     public final static String MAP_DIRECTORY = "./Ressources/Tests/";
     public static String curentFile = getAllMapFiles().get(0);
 
@@ -42,14 +46,14 @@ public class Settings {
     public static MetaHeuristic currentHeuristic = metaHeuristicMap.get(metaHeuristicMap.keySet().toArray()[0]);
 
     private static Map<String, List<Float>> recuitSettings = Stream.of(new Object[][] {
-            { "T0", Arrays.asList(new Float[]{300f, 0f, 1000f})},
-            { "N1", Arrays.asList(new Float[]{100f, 0f, 1000f})},
-            { "N2", Arrays.asList(new Float[]{100f, 0f, 1000f})},
-            { "Mu", Arrays.asList(new Float[]{0.999f, 0f, 1f})},
+            { "T0", Arrays.asList(new Float[]{10000f, 0f, 10000f})},
+            { "N1", Arrays.asList(new Float[]{100f, 0f, 10000f})},
+            { "N2", Arrays.asList(new Float[]{100f, 0f, 10000f})},
+            { "Mu", Arrays.asList(new Float[]{0.99f, 0f, 1f})},
     }).collect(Collectors.toMap(data -> (String) data[0], data -> (List<Float>) data[1]));
 
     private static Map<String, List<Float>> TabouSettings = Stream.of(new Object[][] {
-            { "MaxIter", Arrays.asList(new Float[]{200f, 0f, 1000f}) }
+            { "MaxIter", Arrays.asList(new Float[]{10000f, 0f, 10000f}) }
     }).collect(Collectors.toMap(data -> (String) data[0], data -> (List<Float>) data[1]));
 
     public static Map<String, List<Float>> currentHeuristicSettings = TabouSettings;
@@ -105,4 +109,18 @@ public class Settings {
     public static Map<String, List<Float>> getTabouSettings() {
         return TabouSettings;
     }
+
+    public static void exportStatsResults(List<String[]> data, String name) throws IOException
+    {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(Settings.STATS_DIRECTORY + name + ".csv"), ';', '"', '"', "\n" ) ) {
+            writer.writeAll(data);
+            System.out.println("File " + Settings.STATS_DIRECTORY + name + ".csv" + " successfully created !");
+        }
+    }
+
+//    public String convertToCSV(String[] data) {
+//        return Stream.of(data)
+//                .map(this::escapeSpecialCharacters)
+//                .collect(Collectors.joining(","));
+//    }
 }

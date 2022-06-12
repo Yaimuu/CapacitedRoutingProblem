@@ -5,10 +5,7 @@ import Model.MetaHeuristcs.RecuitSimule;
 import Model.Neighborhood.Neighborhood;
 import View.CourseView;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class Course implements Cloneable {
 
@@ -103,7 +100,7 @@ public class Course implements Cloneable {
 
     public void nextStep()
     {
-        Neighborhood test = new Neighborhood(this);
+//        Neighborhood test = new Neighborhood(this);
 //        test.relocate();
 //        test.switchClientsFromTwoTrucks();
 //        test.twoOpts();
@@ -114,11 +111,57 @@ public class Course implements Cloneable {
 
 //        this.generateCourse();
 
+        List<List<String[]>> resultsGeneral = new ArrayList<>();
+
+
         try {
-//            this.trucks = ((Course) test.getSolution().clone()).getTrucks();
-//
-//            this.courseView.setCourseUsed((Course) test.getSolution().clone());
-//            System.out.println(test.getSolution());
+            for (Map.Entry<String, MetaHeuristic> heuristicEntry : Settings.metaHeuristicMap.entrySet())
+            {
+                MetaHeuristic heuristic = heuristicEntry.getValue();
+
+                List<String[]> resultsHeuristic = new ArrayList<>();
+                String[] head = new String[] { "Fichier", "Fitness de départ", "Fitness finale", "Nb Trucks", "Temps d'exécution (en ms)", "Nb clients" };
+                resultsHeuristic.add(head);
+
+                for (String file : CourseFileManager.getAllFiles())
+                {
+                    Course course = this.generateCourse(file);
+                    heuristic.setSolution(course);
+
+                    float meanFitness = 0, meanTrucks = 0, meanExecTime = 0;
+                    int nbExec = 10;
+
+                    System.out.println("Run file : " + file + " " + nbExec + " times !");
+
+                    for(int i = 0; i < nbExec; i++)
+                    {
+                        long startTime = System.nanoTime();
+                        Course result = heuristic.run();
+                        long elapsedTime = System.nanoTime() - startTime;
+
+                        meanFitness += result.computeFitness();
+                        meanTrucks += result.getTrucks().size();
+                        meanExecTime += (float) elapsedTime/1000000f;
+                    }
+                    meanFitness = meanFitness / nbExec;
+                    meanTrucks = meanTrucks / nbExec;
+                    meanExecTime = meanExecTime / nbExec;
+
+                    String[] resultLine = new String[] { file,
+                            Float.toString(course.computeFitness()),
+                            Float.toString(meanFitness),
+                            Float.toString(meanTrucks),
+                            Float.toString(meanExecTime),
+                            String.valueOf(course.getAllClients().size())};
+                    resultsHeuristic.add(resultLine);
+
+                    System.out.println(Arrays.toString(resultLine));
+
+                }
+                Settings.exportStatsResults(resultsHeuristic, heuristic.getName().toString() + "_2");
+                resultsGeneral.add(resultsHeuristic);
+            }
+
         }
         catch (Exception e)
         {
@@ -177,6 +220,8 @@ public class Course implements Cloneable {
 
         for (Truck truck : this.trucks) {
             allClient.addAll(truck.getClients());
+            allClient.remove(truck.getClients().get(0));
+            allClient.remove(truck.getClients().get(truck.getClients().size()-1));
         }
 
         return allClient;
